@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #ffffff;
+  --ink: #000000;
+  --faint-ash: #eeeeee;
+  --steel: #888a8b;
+  --charcoal: #222222;
+  --radius-card: 9.6px;
+  --radius-pill: 9999px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+}

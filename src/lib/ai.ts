@@ -12,7 +12,6 @@ export function getLanguageModel(provider: ActiveProvider): LanguageModel {
     : groq('openai/gpt-oss-120b');
 }
 
-/** Keeps provider calls bounded so route requests cannot hang indefinitely. */
 export function getLlmAbortSignal(): AbortSignal {
   return AbortSignal.timeout(LLM_TIMEOUT_MS);
 }

@@ -1,10 +1,13 @@
 {
   "name": "azimuth",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "db:deploy": "prisma migrate deploy",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
@@ -12,12 +15,18 @@
   "dependencies": {
     "@ai-sdk/google": "^2.0.0",
     "@ai-sdk/groq": "^2.0.0",
+    "@auth/prisma-adapter": "^2.11.1",
+    "@neon/config": "^1.9.3",
+    "@neon/env": "^1.6.4",
+    "@prisma/client": "6.16.2",
     "ai": "^5.0.0",
+    "bcryptjs": "^3.0.3",
     "lucide-react": "^0.468.0",
     "lz-string": "^1.5.0",
     "maplibre-gl": "^5.0.0",
     "motion": "^12.0.0",
     "next": "^15.5.0",
+    "next-auth": "^5.0.0-beta.32",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-map-gl": "^8.0.0",
@@ -30,6 +39,7 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "prisma": "6.16.2",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.0.0",
     "vitest": "^3.0.0"

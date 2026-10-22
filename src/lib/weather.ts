@@ -22,7 +22,6 @@ async function fetchJson(url: URL): Promise<unknown | null> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), EXTERNAL_FETCH_TIMEOUT_MS);
 
-  // Weather is supplementary; an unavailable upstream should not block trip planning.
   try {
     const response = await fetch(url, { signal: controller.signal });
     if (!response.ok) {

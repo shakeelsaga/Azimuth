@@ -10,7 +10,6 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
 }
 
-/** Reads JSON once and prevents Zod details or parser errors from reaching the client. */
 export async function parseRequestBody<TSchema extends z.ZodTypeAny>(
   request: Request,
   schema: TSchema,
@@ -52,7 +51,6 @@ function getErrorStatus(error: unknown): number | null {
   return null;
 }
 
-/** Converts provider failures into the small, human-friendly API error vocabulary. */
 export function createGenerationError(
   error: unknown,
   code: string,

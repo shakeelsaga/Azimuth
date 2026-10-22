@@ -1,6 +1,34 @@
 # Changelog
 
+## v1.2.0 — Secure persistence and release readiness
+
+### 2026-10-22 23:50:00 +05:30
+
+- Standardized the application release version to `1.2.0`.
+- Sanitized release-facing documentation and implementation language.
+- Added the initial Prisma migration for the configured Neon `production` branch.
+- Verified authentication, user-isolated trip persistence, emergency contacts, SOS delivery boundaries, retention controls, and deployment setup documentation.
+- Confirmed that Twilio remains optional and unconfigured; Resend email delivery is the configured testing path.
+- Preserved the existing frontend deferral and backend API scope.
+
 ## v1.1.0 — Backend foundation
+
+### 2026-10-22 23:40:00 +05:30
+
+- Created and applied the initial Prisma migration to the configured Neon `production` branch.
+- Verified the schema is up to date and Prisma client generation succeeds.
+- Confirmed the automated suite, strict typecheck, and production verification workflow remain clean.
+- Documented that Twilio remains intentionally optional and unconfigured.
+
+### 2026-10-22 22:30:00 +05:30
+
+Added backend account and safety foundations:
+
+- Added Auth.js email/password and Google OAuth sign-in with bcrypt password hashing.
+- Added Prisma PostgreSQL models for users, OAuth accounts, saved trips, emergency contacts, and SOS audit events.
+- Added authenticated, user-isolated trip save/list/resume/update APIs.
+- Added emergency contact management and authenticated SOS delivery through Resend and/or Twilio.
+- Documented deployment, migration, OAuth, and SOS provider setup in `Implementation File/backend-auth-database-sos.md`.
 
 ### 2026-10-22 19:51:30 +05:30
 

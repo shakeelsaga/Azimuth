@@ -24,7 +24,6 @@ function normalizeGeneratedTrip(
   input: { destination: string; country: string; daysCount: number; lat: number; lng: number },
   weather: Awaited<ReturnType<typeof getWeatherForecast>>,
 ): TripPlan {
-  // Keep user-selected trip metadata authoritative over model-generated values.
   if (generatedTrip.days.length !== input.daysCount) {
     throw new Error('The generated itinerary did not include every requested day.');
   }

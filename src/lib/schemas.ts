@@ -7,7 +7,6 @@ const CoordinatesSchema = z.object({
   lng: z.number().finite().min(-180).max(180),
 });
 
-// Request schemas
 export const StructuralParamsSchema = z.object({
   travelCompanions: z.enum(['solo', 'couple', 'family_with_kids', 'group_of_friends']),
   tripPurpose: z.enum(['leisure', 'cultural', 'adventure', 'food_and_nightlife']),
@@ -66,7 +65,6 @@ export const TweakRequestSchema = z.object({
   userMessage: z.string().trim().min(1).max(500),
 });
 
-// Structured LLM response schemas
 export const FollowUpQuestionsSchema = z.object({
   greeting: z.string().trim().min(1).max(300).describe('A warm, one-sentence human reaction to their destination choice.'),
   questions: z.array(
@@ -160,7 +158,6 @@ export const TweakResponseSchema = z.object({
   clarificationMessage: z.string().trim().min(1).max(500).optional(),
 });
 
-// Utility schemas and types used by the backend and later UI work.
 export const TransitBridgeInfoSchema = z.object({
   fromStopId: z.string(),
   toStopId: z.string(),

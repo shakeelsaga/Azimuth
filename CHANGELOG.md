@@ -2,6 +2,13 @@
 
 ## v1.2.0 — Secure persistence and release readiness
 
+### 2026-10-23 18:35:00 +05:30
+
+- Prepared application for cloud deployment on Render:
+  - Added `render.yaml` Infrastructure-as-Code Blueprint configuring the Web Service, zero-downtime health check endpoint (`/api/health`), automated database migrations, and production environment variables.
+  - Updated `package.json` with `postinstall: "prisma generate"` and modified `build` script to ensure Prisma client generation precedes Next.js production compilation in fresh container environments.
+  - Added `db:push` script to `package.json` for rapid schema synchronization during deployment builds.
+
 ### 2026-10-23 18:05:00 +05:30
 
 - Created comprehensive user-facing and technical reviewer documentation:

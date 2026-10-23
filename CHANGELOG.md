@@ -2,6 +2,18 @@
 
 ## v1.2.0 — Secure persistence and release readiness
 
+### 2026-10-23 17:33:00 +05:30
+
+- Implemented dynamic AI model selection with automated multi-tier fallback cascade:
+  - Added support for `GEMINI_MODEL` and `GROQ_MODEL` environment overrides in `.env` / `.env.local` to allow testing any specific model version (e.g. `gemini-3-flash-preview`, `gemini-3.5-flash`, `gemini-flash-latest`).
+  - Built `getLanguageModelCascade(provider)` in `src/lib/ai.ts` providing an ordered cascade of models:
+    - Primary candidate: custom user override if provided (`GEMINI_MODEL` / `GROQ_MODEL`).
+    - Google tier cascade: `gemini-3.5-flash` -> `gemini-3-flash-preview` -> `gemini-3.5-flash-lite` -> `gemini-flash-latest` -> `gemini-3.8-flash` -> `gemini-3.6-flash`.
+    - Cross-provider failover: seamlessly falls back to Groq (`openai/gpt-oss-120b`, `llama-3.3-70b-versatile`) if all Google models hit rate limits or quotas.
+  - Updated all 4 AI routes (`generate`, `questions`, `swap-stop`, and `tweak`) to loop through the model cascade upon encountering HTTP 429 quota exhaustion or provider timeouts.
+  - Documented `GEMINI_MODEL` and `GROQ_MODEL` in `.env.example`.
+- Verified 35/35 passing tests across 9 test suites, zero TypeScript errors (`tsc --noEmit`), and clean Next.js 15 production build compiling all 22 routes.
+
 ### 2026-10-23 17:10:00 +05:30
 
 - Bypassed email verification for direct account onboarding & added security advisory:

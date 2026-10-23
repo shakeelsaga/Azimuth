@@ -1,6 +1,6 @@
 import { generateObject } from 'ai';
 
-import { getLanguageModel, getLlmAbortSignal } from '@/lib/ai';
+import { getLanguageModel, getLanguageModelCascade, getLlmAbortSignal } from '@/lib/ai';
 import { createApiError, getActiveProvider } from '@/lib/env';
 import { sanitizeTripCoordinates } from '@/lib/geo';
 import { createGenerationError, parseRequestBody } from '@/lib/route-utils';
@@ -59,37 +59,44 @@ export async function POST(request: Request): Promise<Response> {
   const weather = await getWeatherForecast(input.lat, input.lng);
   const weatherSummary = input.weatherSummary ?? generateWeatherSummary(weather, input.daysCount);
 
-  try {
-    const result = await generateObject({
-      model: getLanguageModel(provider),
-      schema: TripPlanSchema,
-      schemaName: 'trip_plan',
-      system: [
-        'You are an expert travel planner creating a realistic, human-paced day-by-day itinerary.',
-        'Maximum three to four stops per day; never more than four. Morning starts no earlier than 09:00 AM and evenings end by 09:00 PM.',
-        `Every place must really exist in ${input.destination}; coordinates must be accurate and within 30 km of ${input.lat}, ${input.lng}.`,
-        'Keep consecutive stops geographically close, ideally under 5 km apart. Include practical notes about crowds, closures, and timing.',
-        'Include a local food spot for at least two stops each day and an overnight suggestion for the final stop each day.',
-        'Include 3 to 5 practical packing items, 3 before-you-go tips, and 3 suggested tweak prompts.',
-        `Respect the ${input.structuralParams.budgetPreference} budget.`,
-        'Speak like a thoughtful local friend. Never use jargon, technical terms, marketing speak, or robotic language.',
-      ].join(' '),
-      prompt: [
-        `Destination: ${input.destination}, ${input.country}.`,
-        `Trip length: ${input.daysCount} days.`,
-        `Travellers: ${input.structuralParams.travelCompanions}. Purpose: ${input.structuralParams.tripPurpose}. Budget: ${input.structuralParams.budgetPreference}.`,
-        `Weather: ${weatherSummary}`,
-        `Their answers: ${JSON.stringify(input.userAnswers)}.`,
-        `Anything else they shared: ${input.customNotes || 'Nothing else.'}`,
-      ].join('\n'),
-      temperature: 0.45,
-      maxRetries: 1,
-      abortSignal: getLlmAbortSignal(),
-    });
+  const modelsToTry = getLanguageModelCascade(provider);
+  let lastError: unknown = null;
 
-    const trip = normalizeGeneratedTrip(result.object, input, weather);
-    return Response.json(trip, { headers: { 'Cache-Control': 'no-store' } });
-  } catch (error) {
-    return createGenerationError(error, 'generation_failed', "Couldn't build that trip right now.");
+  for (const model of modelsToTry) {
+    try {
+      const result = await generateObject({
+        model,
+        schema: TripPlanSchema,
+        schemaName: 'trip_plan',
+        system: [
+          'You are an expert travel planner creating a realistic, human-paced day-by-day itinerary.',
+          'Maximum three to four stops per day; never more than four. Morning starts no earlier than 09:00 AM and evenings end by 09:00 PM.',
+          `Every place must really exist in ${input.destination}; coordinates must be accurate and within 30 km of ${input.lat}, ${input.lng}.`,
+          'Keep consecutive stops geographically close, ideally under 5 km apart. Include practical notes about crowds, closures, and timing.',
+          'Include a local food spot for at least two stops each day and an overnight suggestion for the final stop each day.',
+          'Include 3 to 5 practical packing items, 3 before-you-go tips, and 3 suggested tweak prompts.',
+          `Respect the ${input.structuralParams.budgetPreference} budget.`,
+          'Speak like a thoughtful local friend. Never use jargon, technical terms, marketing speak, or robotic language.',
+        ].join(' '),
+        prompt: [
+          `Destination: ${input.destination}, ${input.country}.`,
+          `Trip length: ${input.daysCount} days.`,
+          `Travellers: ${input.structuralParams.travelCompanions}. Purpose: ${input.structuralParams.tripPurpose}. Budget: ${input.structuralParams.budgetPreference}.`,
+          `Weather: ${weatherSummary}`,
+          `Their answers: ${JSON.stringify(input.userAnswers)}.`,
+          `Anything else they shared: ${input.customNotes || 'Nothing else.'}`,
+        ].join('\n'),
+        temperature: 0.45,
+        maxRetries: 1,
+        abortSignal: getLlmAbortSignal(),
+      });
+
+      const trip = normalizeGeneratedTrip(result.object, input, weather);
+      return Response.json(trip, { headers: { 'Cache-Control': 'no-store' } });
+    } catch (error) {
+      lastError = error;
+    }
   }
+
+  return createGenerationError(lastError, 'generation_failed', "Couldn't build that trip right now.");
 }

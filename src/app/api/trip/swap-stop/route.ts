@@ -1,6 +1,6 @@
 import { generateObject } from 'ai';
 
-import { getAlternativeModel, getLanguageModel, getLlmAbortSignal } from '@/lib/ai';
+import { getAlternativeModel, getLanguageModel, getLanguageModelCascade, getLlmAbortSignal } from '@/lib/ai';
 import { createApiError, getActiveProvider } from '@/lib/env';
 import { createGenerationError, parseRequestBody } from '@/lib/route-utils';
 import { SwapStopRequestSchema, SwapStopResponseSchema } from '@/lib/schemas';
@@ -59,11 +59,7 @@ export async function POST(request: Request): Promise<Response> {
       `Set actionTaken to ${input.tripContext.daysCount === 1 ? 'moved_within_day' : 'moved_and_replaced'} and include relocatedStopUpdate.`,
     ].join(' ');
 
-  const modelsToTry = [getLanguageModel(provider)];
-  const altModel = getAlternativeModel(provider);
-  if (altModel) {
-    modelsToTry.push(altModel);
-  }
+  const modelsToTry = getLanguageModelCascade(provider);
 
   let lastError: unknown = null;
 

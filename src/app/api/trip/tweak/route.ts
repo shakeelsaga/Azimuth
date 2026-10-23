@@ -1,6 +1,6 @@
 import { generateObject } from 'ai';
 
-import { getAlternativeModel, getLanguageModel, getLlmAbortSignal } from '@/lib/ai';
+import { getAlternativeModel, getLanguageModel, getLanguageModelCascade, getLlmAbortSignal } from '@/lib/ai';
 import { createApiError, getActiveProvider } from '@/lib/env';
 import { createGenerationError, parseRequestBody } from '@/lib/route-utils';
 import { TweakRequestSchema, TweakResponseSchema, type TweakResponse } from '@/lib/schemas';
@@ -67,11 +67,7 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const input = parsedRequest.data;
-  const modelsToTry = [getLanguageModel(provider)];
-  const altModel = getAlternativeModel(provider);
-  if (altModel) {
-    modelsToTry.push(altModel);
-  }
+  const modelsToTry = getLanguageModelCascade(provider);
 
   let lastError: unknown = null;
 

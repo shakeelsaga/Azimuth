@@ -4,6 +4,7 @@ const mocks = vi.hoisted(() => ({
   generateObject: vi.fn(),
   getLanguageModel: vi.fn(() => ({})),
   getAlternativeModel: vi.fn(() => null),
+  getLanguageModelCascade: vi.fn(() => [{}]),
   getLlmAbortSignal: vi.fn(() => AbortSignal.timeout(1_000)),
   getWeatherForecast: vi.fn(),
   generateWeatherSummary: vi.fn(),
@@ -13,6 +14,7 @@ vi.mock('ai', () => ({ generateObject: mocks.generateObject }));
 vi.mock('@/lib/ai', () => ({
   getLanguageModel: mocks.getLanguageModel,
   getAlternativeModel: mocks.getAlternativeModel,
+  getLanguageModelCascade: mocks.getLanguageModelCascade,
   getLlmAbortSignal: mocks.getLlmAbortSignal,
 }));
 vi.mock('@/lib/weather', () => ({

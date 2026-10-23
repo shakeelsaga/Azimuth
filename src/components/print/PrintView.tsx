@@ -19,7 +19,7 @@ export function PrintView({ trip }: PrintViewProps) {
       {/* Print Cover Header */}
       <div className="print-header" style={{ marginBottom: '24pt', textAlign: 'center' }}>
         <h1 style={{ fontSize: '28pt', margin: 0, fontWeight: 700, letterSpacing: '-0.03em' }}>
-          AZIMUTH
+          AZ<span style={{ color: '#F01916' }}>i</span>MUTH
         </h1>
         <div style={{ fontSize: '16pt', marginTop: '6pt', fontWeight: 600 }}>
           {trip.destination}, {trip.country} — {trip.daysCount} {trip.daysCount === 1 ? 'Day' : 'Days'}

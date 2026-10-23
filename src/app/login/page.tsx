@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { motion, AnimatePresence } from 'motion/react';
-import { AzimuthLogo } from '@/components/brand/AzimuthLogo';
+import { AzimuthLogo, AzimuthWordmark } from '@/components/brand/AzimuthLogo';
 import { ArrowLeft, Sparkles, AlertCircle, CheckCircle2, RotateCw } from 'lucide-react';
 
 function LoginContent() {
@@ -273,20 +273,12 @@ function LoginContent() {
   const isVerificationStep = (mode === 'signup' && signupStep === 'verify') || (mode === 'forgot' && forgotStep === 'verify');
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
-        minHeight: '100vh',
-        background: 'var(--color-paper)',
-      }}
-    >
+    <div className="login-split-layout">
       {/* Left Column: Hero Split Screen Image */}
       <div
         className="login-hero-pane"
         style={{
           position: 'relative',
-          minHeight: '400px',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
@@ -314,45 +306,12 @@ function LoginContent() {
 
         {/* Top brand badge */}
         <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div
-            style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '50%',
-              background: 'var(--color-paper)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <AzimuthLogo size={22} />
-          </div>
-          <span style={{ fontSize: '14px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-            Azimuth
-          </span>
+          <AzimuthLogo size={32} />
+          <AzimuthWordmark size="15px" style={{ color: 'var(--color-paper)' }} />
         </div>
 
         {/* Bottom editorial tagline */}
         <div style={{ position: 'relative', zIndex: 2, maxWidth: '440px' }}>
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontSize: '11px',
-              fontWeight: 600,
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              background: 'rgba(255, 255, 255, 0.15)',
-              backdropFilter: 'blur(10px)',
-              padding: '4px 12px',
-              borderRadius: 'var(--radius-buttons)',
-              marginBottom: '16px',
-            }}
-          >
-            <Sparkles size={12} />
-            <span>Travel OS</span>
-          </div>
 
           <h2
             style={{
@@ -378,40 +337,31 @@ function LoginContent() {
         </div>
       </div>
 
-      {/* Right Column: Auth Form */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: 'clamp(32px, 5vw, 64px)',
-          background: 'var(--color-paper)',
-          position: 'relative',
-        }}
-      >
-        {/* Top return link */}
-        <div style={{ position: 'absolute', top: '32px', left: 'clamp(24px, 5vw, 48px)' }}>
-          <Link
-            href="/"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontSize: 'var(--text-caption)',
-              fontWeight: 500,
-              color: 'var(--color-steel)',
-              textDecoration: 'none',
-              transition: 'color var(--transition-fast)',
-            }}
-            className="back-home-link"
-          >
-            <ArrowLeft size={14} />
-            <span>Return to Azimuth</span>
-          </Link>
-        </div>
+      {/* Right Column: Auth Form with Independent Scroll */}
+      <div className="login-form-pane">
+        <div className="login-form-inner">
+          {/* Top return link */}
+          <div style={{ marginBottom: '24px' }}>
+            <Link
+              href="/"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                fontSize: 'var(--text-caption)',
+                fontWeight: 500,
+                color: 'var(--color-steel)',
+                textDecoration: 'none',
+                transition: 'color var(--transition-fast)',
+              }}
+              className="back-home-link"
+            >
+              <ArrowLeft size={14} />
+              <span>Return to <AzimuthWordmark size="13px" /></span>
+            </Link>
+          </div>
 
-        <div style={{ width: '100%', maxWidth: '420px', marginTop: '40px' }}>
+          <div style={{ width: '100%', maxWidth: '420px' }}>
           {/* Header Title */}
           <div style={{ marginBottom: '28px' }}>
             <h1
@@ -987,9 +937,65 @@ function LoginContent() {
             </div>
           )}
         </div>
+        </div>
       </div>
 
       <style>{`
+        .login-split-layout {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          height: 100vh;
+          max-height: 100vh;
+          overflow: hidden;
+          background: var(--color-paper);
+        }
+        .login-hero-pane {
+          height: 100vh;
+          max-height: 100vh;
+          overflow: hidden;
+          position: relative;
+        }
+        .login-form-pane {
+          height: 100vh;
+          max-height: 100vh;
+          overflow-y: auto;
+          overflow-x: hidden;
+          -webkit-overflow-scrolling: touch;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          background: var(--color-paper);
+          padding: clamp(24px, 4vw, 56px);
+        }
+        .login-form-inner {
+          width: 100%;
+          max-width: 420px;
+          margin: auto 0;
+          padding: 24px 0;
+        }
+
+        @media (max-width: 899px) {
+          .login-split-layout {
+            grid-template-columns: 1fr !important;
+            height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
+          }
+          .login-hero-pane {
+            min-height: 280px !important;
+            height: 35vh !important;
+            max-height: 380px !important;
+          }
+          .login-form-pane {
+            height: auto !important;
+            max-height: none !important;
+            overflow-y: visible !important;
+          }
+          .login-form-inner {
+            margin: 0 !important;
+          }
+        }
+
         .back-home-link:hover {
           color: var(--color-ink) !important;
         }

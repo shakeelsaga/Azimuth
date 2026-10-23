@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
-import { AzimuthLogo } from '@/components/brand/AzimuthLogo';
+import { AzimuthLogo, AzimuthWordmark } from '@/components/brand/AzimuthLogo';
 import {
   ArrowLeft,
   User,
@@ -221,9 +221,7 @@ function ProfileContent() {
           <div style={{ height: '16px', width: '1px', background: 'var(--color-faint-ash)' }} />
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <AzimuthLogo size={22} />
-            <span style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em' }}>
-              AZIMUTH
-            </span>
+            <AzimuthWordmark size="13px" />
           </div>
         </div>
 

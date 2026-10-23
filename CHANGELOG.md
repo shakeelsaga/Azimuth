@@ -2,6 +2,31 @@
 
 ## v1.2.0 — Secure persistence and release readiness
 
+### 2026-10-23 15:25:00 +05:30
+
+- Refined Landing Page with Humane Copy and Alternating Scroll Showcase:
+  - Formatted features as 4 alternating floating scroll rows: Feature 1 (left image placeholder, right info), Feature 2 (right image placeholder, left info), Feature 3 (left image placeholder, right info), Feature 4 (right image placeholder, left info) — with animated reveals on scroll.
+  - Image placeholders automatically display any dropped images in `/assets/` (`feature_pacing.png`, `feature_map.png`, `feature_tweak.png`, `feature_budget.png`) or tasteful placeholder frames when not yet provided.
+  - Replaced all AI/tech buzzwords (e.g. "Travel OS", "circadian vector engine") with grounded, natural, humane travel language throughout all new components.
+  - Replaced circular logo containers with clean square containers across all brand wrappers (`LandingHeader.tsx`, `SaaSFooter.tsx`, `login/page.tsx`).
+  - Shortened Origin Story section (`BrandStory.tsx`) to 2 punchy, thoughtful paragraphs explaining Azimuth and the Arctic Tern without the separate callout box or essays.
+  - Removed Asset Specifications section and linked the story section directly to the SaaS footer.
+- Fixed Login/Signup Page split-screen independent scrolling (`src/app/login/page.tsx`):
+  - Locked split layout grid on desktop viewports to `height: 100vh; overflow: hidden;` so the left hero image pane stays completely stationary and pinned.
+  - Configured the right auth pane with independent scroll (`height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch;`), allowing users to comfortably fill out signup fields without scrolling the left image.
+- Updated Brand Logotype to `AZiMUTH` with Arctic Tern red lowercase `i`:
+  - Created reusable `AzimuthWordmark` in `src/components/brand/AzimuthLogo.tsx` rendering `AZ<span style={{ color: '#F01916' }}>i</span>MUTH` (Arctic Tern beak red `#F01916`).
+  - Updated all brand wordmark occurrences in `HeroIntake.tsx`, `TopNavBar.tsx`, `login/page.tsx`, `profile/page.tsx`, and `PrintView.tsx`.
+- Documented Monumental Wordmark typography for Figma recreation:
+  - Font: `Inter` (`--font-inter`, Google Fonts)
+  - Weight: `700` (Bold)
+  - Letter spacing / Tracking: `-0.057em` (-5.7% in Figma)
+  - Line height: `1.0` (100%)
+- Trademark & Brand Cleanliness: Clarified that `™` represents unregistered common-law trademark rights and is legally standard without official registration; removed `™` superscript across header, hero, and footer for a clean, modern aesthetic.
+- Edge-to-Edge Logo Fill: Cropped `Azimuth_Logo.png` to tightly frame the Arctic Tern silhouette without the original 40% blank whitespace padding, optimized the asset to crisp 1024x1024px (191KB), and updated `AzimuthLogo.tsx` with `objectPosition: 'center'`, allowing the logo image to fill its square container edge-to-edge across all navigational bars, footers, and auth pages.
+- Verified 100% test pass rate across 6 test suites (21 tests) and strict TypeScript typechecking.
+
+
 ### 2026-10-23 12:22:00 +05:30
 
 - Gracefully handled missing emergency contacts and clipboard permissions in SOS modal:

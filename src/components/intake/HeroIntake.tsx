@@ -10,6 +10,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { UserProfileMenu } from '@/components/auth/UserProfileMenu';
+import { LandingHeader } from '@/components/landing/LandingHeader';
+import { FeatureShowcase } from '@/components/landing/FeatureShowcase';
+import { BrandStory } from '@/components/landing/BrandStory';
+import { SaaSFooter } from '@/components/landing/SaaSFooter';
+import { AzimuthWordmark } from '@/components/brand/AzimuthLogo';
 
 const DAY_OPTIONS = [1, 2, 3, 4, 5, 6, 7];
 
@@ -177,83 +182,61 @@ export function HeroIntake() {
       width: '100%',
       position: 'relative',
       overflowX: 'clip',
+      background: 'var(--color-paper)',
     }}>
-      {/* Peeking Corner Logo Card - Top Left */}
-      <motion.div
-        initial={{ opacity: 0, x: -30, y: -30 }}
-        animate={{ opacity: 1, x: 0, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        whileHover={{ x: 8, y: 8 }}
-        style={{
-          position: 'absolute',
-          top: '-50px',
-          left: '-50px',
-          width: '210px',
-          height: '210px',
-          borderRadius: 'var(--radius-cards)',
-          border: '1px solid var(--color-ink)',
-          background: 'transparent',
-          zIndex: 40,
-          cursor: 'pointer',
-          boxShadow: 'none',
-          overflow: 'hidden',
-        }}
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        title="Azimuth"
-      >
-        <Image
-          src="/assets/Azimuth_Logo.png"
-          alt="Azimuth logo"
-          fill
-          sizes="210px"
-          style={{ objectFit: 'cover' }}
-          priority
-        />
-      </motion.div>
+      {/* Top Persistent SaaS Navigation Bar */}
+      <LandingHeader />
 
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: 'clamp(24px, 4vw, 56px)',
-        maxWidth: '900px',
-        margin: '0 auto',
-        position: 'relative',
-      }}>
-
-      {/* Top Right User Profile / Auth Nav */}
       <div
+        id="planner-intake"
         style={{
-          position: 'absolute',
-          top: 'clamp(16px, 2.5vw, 28px)',
-          right: 'clamp(24px, 4vw, 56px)',
-          zIndex: 10,
+          minHeight: 'calc(100vh - 64px)',
           display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
+          flexDirection: 'column',
+          padding: 'clamp(24px, 4vw, 56px)',
+          maxWidth: '960px',
+          margin: '0 auto',
+          position: 'relative',
         }}
       >
-        <UserProfileMenu />
-      </div>
 
-      {/* Monumental Wordmark */}
-      <div style={{ marginTop: 'clamp(48px, 12vh, 120px)' }}>
-        <BlurText
-          text="AZIMUTH™"
-          className=""
-          as="h1"
-          delay={0.1}
-        />
-        <style>{`
-          h1 {
-            font-size: clamp(72px, 14vw, 211px) !important;
-            font-weight: 700 !important;
-            letter-spacing: -0.057em !important;
-            line-height: 1 !important;
-            color: var(--color-ink) !important;
-            margin: 0 !important;
-          }
-        `}</style>
+      {/* Monumental Wordmark & Editorial Brand Position */}
+      <div style={{ marginTop: 'clamp(32px, 8vh, 80px)' }}>
+        <motion.h1
+          initial={{ filter: 'blur(10px)', opacity: 0, y: 16 }}
+          animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            fontSize: 'clamp(64px, 13vw, 190px)',
+            fontWeight: 700,
+            letterSpacing: '-0.057em',
+            lineHeight: 1,
+            color: 'var(--color-ink)',
+            margin: 0,
+            userSelect: 'none',
+            display: 'inline-flex',
+            alignItems: 'baseline',
+          }}
+          aria-label="AZiMUTH"
+        >
+          <span>AZ</span>
+          <span style={{ color: '#F01916' }}>i</span>
+          <span>MUTH</span>
+        </motion.h1>
+
+        <p
+          style={{
+            fontSize: 'clamp(17px, 2.2vw, 22px)',
+            fontWeight: 500,
+            lineHeight: 1.4,
+            color: 'var(--color-charcoal)',
+            margin: '16px 0 0 0',
+            maxWidth: '680px',
+            letterSpacing: '-0.015em',
+          }}
+        >
+          Calm, realistic travel plans built around your pace.
+        </p>
       </div>
 
       {/* Floating Showcase Card - Desktop */}
@@ -716,8 +699,17 @@ export function HeroIntake() {
         )}
       </div>
 
-      {/* Close inner centered content container */}
+      {/* Close inner centered intake container */}
       </div>
+
+      {/* Features Showcase: 4 Alternating Features on Scroll */}
+      <FeatureShowcase />
+
+      {/* Origin Story: Azimuth & The Arctic Tern (Short, direct to footer) */}
+      <BrandStory />
+
+      {/* SaaS Footer */}
+      <SaaSFooter />
 
       {/* Global & Component Styles */}
       <style>{`

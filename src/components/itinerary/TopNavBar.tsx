@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { AzimuthLogo } from '@/components/brand/AzimuthLogo';
+import { AzimuthLogo, AzimuthWordmark } from '@/components/brand/AzimuthLogo';
 import { useTripStore } from '@/store/useTripStore';
 import { encodeTripToURL } from '@/lib/share';
 import type { TripPlan, WeatherDay } from '@/lib/schemas';
@@ -133,16 +133,7 @@ export function TopNavBar({
           }}
         >
           <AzimuthLogo size={28} />
-          <span
-            style={{
-              fontSize: 'var(--text-body-sm)',
-              fontWeight: 700,
-              letterSpacing: '0.04em',
-              color: 'var(--color-ink)',
-            }}
-          >
-            AZIMUTH
-          </span>
+          <AzimuthWordmark size="14px" />
         </div>
 
       {/* Center (Desktop only): Destination status & weather */}

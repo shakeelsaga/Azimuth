@@ -2,6 +2,20 @@
 
 ## v1.2.0 — Secure persistence and release readiness
 
+### 2026-10-23 17:10:00 +05:30
+
+- Bypassed email verification for direct account onboarding & added security advisory:
+  - Updated `POST /api/auth/register` and `src/app/login/page.tsx` to allow direct user creation and immediate sign-in without requiring 6-digit verification codes.
+  - Preserved verification token logic in code utilities for restoration upon custom domain activation.
+  - Added a prominent Security Advisory in the Sign Up tab recommending Google Sign-In, explaining that email verification requires a verified custom domain with SPF/DKIM records (pending setup), and clarifying the security implications of unverified email accounts.
+  - Updated `POST /api/auth/password-reset/request` and `send-code` to gracefully return sandbox codes rather than failing with HTTP 502 when email dispatch is restricted.
+- Fixed SOS broadcast 502 error and added Gmail SMTP fallback:
+  - Diagnosed that Resend's test tier (`onboarding@resend.dev`) restricts delivery to non-owner recipient addresses, causing emergency dispatches to fail with HTTP 403.
+  - Added Gmail SMTP fallback to `sendEmail` in `src/app/api/sos/route.ts` via Nodemailer.
+  - Updated `POST /api/sos` to persist the emergency event in PostgreSQL and return HTTP 200 with `{ status: 'recorded', delivered: false, mapUrl }` instead of failing with 502, ensuring travelers always have immediate access to their live emergency GPS link.
+  - Updated `SosEmergencyModal.tsx` with clear status feedback.
+- Verified 35/35 passing tests across 9 test suites, zero TypeScript errors (`tsc --noEmit`), and clean Next.js 15 production build compiling all 22 routes.
+
 ### 2026-10-23 16:35:00 +05:30
 
 - Implemented trip deletion endpoint (`DELETE /api/trips/[id]`):

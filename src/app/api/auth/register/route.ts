@@ -8,7 +8,7 @@ const RegisterSchema = z.object({
   name: z.string().trim().min(1).max(120),
   email: z.string().trim().email().max(320),
   password: z.string().min(8).max(200),
-  code: z.string().trim().regex(/^\d{6}$/, 'Verification code must be 6 digits.'),
+  code: z.string().trim().optional(),
 });
 
 export const runtime = 'nodejs';
@@ -23,7 +23,7 @@ export async function POST(request: Request): Promise<Response> {
 
   const parsed = RegisterSchema.safeParse(body);
   if (!parsed.success) {
-    const errorMsg = parsed.error.issues[0]?.message || 'Please provide a name, valid email, 8+ character password, and 6-digit code.';
+    const errorMsg = parsed.error.issues[0]?.message || 'Please provide a name, valid email, and 8+ character password.';
     return createApiError('validation_failed', errorMsg, 400);
   }
 
@@ -33,22 +33,32 @@ export async function POST(request: Request): Promise<Response> {
     return createApiError('email_unavailable', 'An account already exists for that email.', 409);
   }
 
-  // Verify the 6-digit code against the database
-  const identifier = `signup:${email}`;
-  const tokenHash = hashOpaqueToken(parsed.data.code);
-  const tokenRecord = await prisma.verificationToken.findFirst({
-    where: {
-      identifier,
-      token: tokenHash,
-      expires: { gt: new Date() },
-    },
-  });
-
-  if (!tokenRecord) {
-    return createApiError('invalid_code', 'Invalid or expired verification code. Please request a new code.', 400);
+  // --- VERIFICATION CODE UTILITY (PRESERVED FOR CUSTOM DOMAIN DEPLOYMENT) ---
+  // In development sandbox mode without a verified custom domain, transactional email dispatch
+  // to arbitrary domains is restricted by Resend. Email verification is temporarily bypassed
+  // so users can directly create accounts.
+  // When a custom domain is verified in Resend (e.g. @azimuth.travel) with SPF/DKIM records:
+  // 1. Require `code` in RegisterSchema
+  // 2. Uncomment the verification check below:
+  /*
+  if (parsed.data.code) {
+    const identifier = `signup:${email}`;
+    const tokenHash = hashOpaqueToken(parsed.data.code);
+    const tokenRecord = await prisma.verificationToken.findFirst({
+      where: {
+        identifier,
+        token: tokenHash,
+        expires: { gt: new Date() },
+      },
+    });
+    if (!tokenRecord) {
+      return createApiError('invalid_code', 'Invalid or expired verification code.', 400);
+    }
+    await prisma.verificationToken.deleteMany({ where: { identifier } });
   }
+  */
 
-  // Create verified user
+  // Create user directly
   const user = await prisma.user.create({
     data: {
       name: parsed.data.name,
@@ -58,9 +68,6 @@ export async function POST(request: Request): Promise<Response> {
     },
     select: { id: true, name: true, email: true },
   });
-
-  // Clean up used verification token
-  await prisma.verificationToken.deleteMany({ where: { identifier } });
 
   return Response.json(user, { status: 201 });
 }

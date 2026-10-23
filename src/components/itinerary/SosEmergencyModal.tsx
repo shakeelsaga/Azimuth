@@ -102,10 +102,15 @@ export function SosEmergencyModal({ isOpen, trip, onClose }: SosEmergencyModalPr
         }),
       });
 
+      const data = await res.json().catch(() => ({}));
+
       if (res.ok) {
-        showToast('Emergency alert dispatched to your contacts.', 'info');
+        if (data.delivered) {
+          showToast('Emergency alert dispatched to your contacts.', 'info');
+        } else {
+          showToast('SOS alert logged in database! (Sandbox mode: domain verification pending — copy emergency link)', 'info');
+        }
       } else {
-        const data = await res.json().catch(() => ({}));
         if (res.status === 409 || data.error === 'contacts_required') {
           setContactsError('No emergency contacts found. Please add trusted contacts in your Profile & Security page before sending SOS broadcasts.');
           showToast('No emergency contacts configured.', 'error');

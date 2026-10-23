@@ -96,7 +96,12 @@ function LoginContent() {
               setErrorMsg(data.message || 'Could not send reset code. Please check your email.');
             } else {
               setForgotStep('verify');
-              setSuccessMsg(`Account verified! We sent a 6-digit reset code to ${email.trim()}.`);
+              if (data.devCode) {
+                setCode(data.devCode);
+                setSuccessMsg(`Sandbox code generated: ${data.devCode} (custom domain pending). Enter new password below.`);
+              } else {
+                setSuccessMsg(`Account verified! We sent a 6-digit reset code to ${email.trim()}.`);
+              }
             }
           } catch {
             setErrorMsg('Network error. Please try again later.');
@@ -107,7 +112,7 @@ function LoginContent() {
 
       // forgotStep === 'verify'
       if (!code.trim() || code.trim().length !== 6) {
-        setErrorMsg('Please enter the 6-digit reset code sent to your email.');
+        setErrorMsg('Please enter the 6-digit reset code.');
         return;
       }
       if (password.length < 8) {
@@ -157,49 +162,18 @@ function LoginContent() {
       return;
     }
 
-    // --- SIGN UP FLOW ---
+    // --- SIGN UP FLOW (DIRECT ONBOARDING WITHOUT CODE VERIFICATION) ---
     if (mode === 'signup') {
-      if (signupStep === 'details') {
-        if (!name.trim()) {
-          setErrorMsg('Please provide your name.');
-          return;
-        }
-        if (!email.trim() || !email.includes('@')) {
-          setErrorMsg('Please enter a valid email address.');
-          return;
-        }
-        if (password.length < 8) {
-          setErrorMsg('Password must be at least 8 characters.');
-          return;
-        }
-
-        startTransition(async () => {
-          try {
-            const res = await fetch('/api/auth/register/send-code', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                name: name.trim(),
-                email: email.trim().toLowerCase(),
-              }),
-            });
-            const data = await res.json();
-            if (!res.ok) {
-              setErrorMsg(data.message || 'Could not send verification code.');
-              return;
-            }
-            setSignupStep('verify');
-            setSuccessMsg(`We sent a 6-digit verification code to ${email.trim()}. Enter it below to complete registration.`);
-          } catch {
-            setErrorMsg('Network error. Please try again.');
-          }
-        });
+      if (!name.trim()) {
+        setErrorMsg('Please provide your name.');
         return;
       }
-
-      // signupStep === 'verify'
-      if (!code.trim() || code.trim().length !== 6) {
-        setErrorMsg('Please enter the 6-digit verification code.');
+      if (!email.trim() || !email.includes('@')) {
+        setErrorMsg('Please enter a valid email address.');
+        return;
+      }
+      if (password.length < 8) {
+        setErrorMsg('Password must be at least 8 characters.');
         return;
       }
 
@@ -212,16 +186,15 @@ function LoginContent() {
               name: name.trim(),
               email: email.trim().toLowerCase(),
               password,
-              code: code.trim(),
             }),
           });
           const data = await res.json();
           if (!res.ok) {
-            setErrorMsg(data.message || 'Registration failed. The code may be invalid or expired.');
+            setErrorMsg(data.message || 'Registration failed. Please check your details.');
             return;
           }
 
-          // Automatically sign in the newly registered and verified user
+          // Automatically sign in the newly registered user
           const result = await signIn('credentials', {
             email: email.trim().toLowerCase(),
             password,
@@ -231,7 +204,7 @@ function LoginContent() {
 
           if (result?.error) {
             switchMode('signin');
-            setSuccessMsg('Account verified and created successfully! Please sign in with your credentials.');
+            setSuccessMsg('Account created successfully! Please sign in with your credentials.');
           } else {
             router.push(callbackUrl);
             router.refresh();
@@ -560,10 +533,60 @@ function LoginContent() {
             )}
           </AnimatePresence>
 
+          {/* Security Advisory for Sign Up & Domain Verification */}
+          {mode === 'signup' && (
+            <div
+              style={{
+                padding: '14px 16px',
+                borderRadius: 'var(--radius-small)',
+                background: 'rgba(245, 158, 11, 0.08)',
+                border: '1px solid rgba(245, 158, 11, 0.3)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px',
+                marginBottom: '20px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#b45309', fontSize: '13px', fontWeight: 700 }}>
+                <AlertCircle size={15} style={{ flexShrink: 0 }} />
+                <span>Security Advisory: Sign in with Google Recommended</span>
+              </div>
+              <p style={{ margin: 0, fontSize: '12px', color: 'var(--color-charcoal)', lineHeight: 1.5 }}>
+                <strong>Notice:</strong> Email confirmation is temporarily bypassed because sending transactional verification emails requires a verified custom domain with SPF/DKIM DNS records (currently in setup). Direct email registration creates an unverified account.
+              </p>
+              <p style={{ margin: 0, fontSize: '12px', color: '#92400e', lineHeight: 1.5 }}>
+                For verified account protection and instant access, we strongly recommend using <strong>Continue with Google</strong> above. Once our custom domain is connected, strict cryptographic 6-digit email confirmation will be re-enabled.
+              </p>
+            </div>
+          )}
+
+          {/* Domain Notice for Forgot Password */}
+          {mode === 'forgot' && forgotStep === 'request' && (
+            <div
+              style={{
+                padding: '12px 14px',
+                borderRadius: 'var(--radius-small)',
+                background: 'var(--color-faint-ash)',
+                border: '1px solid #e5e5e5',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '6px',
+                marginBottom: '18px',
+              }}
+            >
+              <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-ink)' }}>
+                Domain Verification Notice
+              </div>
+              <p style={{ margin: 0, fontSize: '12px', color: 'var(--color-steel)', lineHeight: 1.45 }}>
+                Transactional email dispatch requires a verified custom domain. If you signed in with Google, please use Google sign-in. For development testing, a sandbox reset code will be provided.
+              </p>
+            </div>
+          )}
+
           {/* Form */}
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {/* Step 1: Sign up details */}
-            {mode === 'signup' && signupStep === 'details' && (
+            {/* Sign up details: Name input */}
+            {mode === 'signup' && (
               <div>
                 <label
                   htmlFor="signup-name"
@@ -642,8 +665,8 @@ function LoginContent() {
               </div>
             )}
 
-            {/* Password input for signin or signup details */}
-            {((mode === 'signin') || (mode === 'signup' && signupStep === 'details')) && (
+            {/* Password input for signin or signup */}
+            {(mode === 'signin' || mode === 'signup') && (
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                   <label
@@ -854,11 +877,7 @@ function LoginContent() {
               {isPending ? (
                 <span>Processing...</span>
               ) : mode === 'signup' ? (
-                signupStep === 'details' ? (
-                  <span>Send Verification Code →</span>
-                ) : (
-                  <span>Verify Code & Complete Sign Up →</span>
-                )
+                <span>Create Account →</span>
               ) : mode === 'forgot' ? (
                 forgotStep === 'request' ? (
                   <span>Send 6-Digit Reset Code →</span>

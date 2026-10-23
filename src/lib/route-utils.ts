@@ -48,6 +48,15 @@ function getErrorStatus(error: unknown): number | null {
     }
   }
 
+  if (isRecord(error.lastError)) {
+    for (const key of ['status', 'statusCode']) {
+      const value = error.lastError[key];
+      if (typeof value === 'number') {
+        return value;
+      }
+    }
+  }
+
   return null;
 }
 
@@ -60,7 +69,13 @@ export function createGenerationError(
   const status = getErrorStatus(error);
   const errorMessage = error instanceof Error ? error.message.toLowerCase() : '';
 
-  if (status === 429 || errorMessage.includes('rate limit') || errorMessage.includes('429')) {
+  if (
+    status === 429 ||
+    errorMessage.includes('rate limit') ||
+    errorMessage.includes('429') ||
+    errorMessage.includes('quota') ||
+    errorMessage.includes('resource_exhausted')
+  ) {
     return createApiError('rate_limited', 'Too many requests. Try again in a moment.', 429);
   }
 

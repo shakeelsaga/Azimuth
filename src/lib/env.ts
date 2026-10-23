@@ -1,12 +1,20 @@
 export type ActiveProvider = 'google' | 'groq';
 
 export function getActiveProvider(): ActiveProvider | null {
-  if (process.env.GROQ_API_KEY) {
+  const preferred = process.env.AI_PROVIDER?.toLowerCase().trim();
+  if (preferred === 'groq' && process.env.GROQ_API_KEY) {
     return 'groq';
+  }
+  if (preferred === 'google' && process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    return 'google';
   }
 
   if (process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
     return 'google';
+  }
+
+  if (process.env.GROQ_API_KEY) {
+    return 'groq';
   }
 
   return null;

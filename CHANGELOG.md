@@ -2,6 +2,26 @@
 
 ## v1.2.0 — Secure persistence and release readiness
 
+### 2026-10-23 16:35:00 +05:30
+
+- Implemented trip deletion endpoint (`DELETE /api/trips/[id]`):
+  - Authorized users can delete saved trips with strict ownership verification (`where: { id, userId: user.id }`).
+  - Returns `{ deleted: true }` upon successful deletion or HTTP 404 if not found.
+- Added production health check endpoint (`GET /api/health`):
+  - Probes database connectivity via lightweight query (`SELECT 1`), returning HTTP 200 with `{ status: 'ok', database: 'connected', timestamp }` or HTTP 503 degraded status on error.
+  - Configured `Cache-Control: no-store` for deployment platforms and uptime monitors.
+- Added comprehensive unit test suites:
+  - Added `src/app/api/trips/trips.test.ts` (9 tests covering auth, creation, listing, updating, and deletion).
+  - Added `src/app/api/health/health.test.ts` (2 tests covering healthy and degraded states).
+- Verified with 35 passing tests across 9 suites, zero TypeScript errors (`tsc --noEmit`), and clean Next.js 15 production build compiling all 22 routes.
+
+### 2026-10-23 15:04:19 +05:30
+
+- Added a Gmail SMTP fallback for account verification and password-reset emails when Resend cannot deliver.
+- Kept Resend as the primary mail sender and left SOS delivery unchanged.
+- Added server-only Gmail App Password configuration and focused mail-delivery tests (`src/lib/auth-email.test.ts`).
+- Verified with passing automated tests, strict TypeScript checking, and a successful production build.
+
 ### 2026-10-23 12:22:00 +05:30
 
 - Gracefully handled missing emergency contacts and clipboard permissions in SOS modal:

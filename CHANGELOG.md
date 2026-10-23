@@ -2,6 +2,12 @@
 
 ## v1.2.0 — Secure persistence and release readiness
 
+### 2026-10-23 18:05:00 +05:30
+
+- Created comprehensive user-facing and technical reviewer documentation:
+  - Authored polished commercial `README.md` in the project root following `create-readme` skill guidelines, featuring high-resolution architectural flowchart illustration (`public/assets/flowchart.png`), interactive feature walkthroughs, environment variable specifications, and explicit disclosures of known limitations and sandbox email trade-offs.
+  - Authored `Developer_docs.md` in `Implementation File/` providing an authentic, developer-to-developer retrospective for assessment reviewers detailing AI tooling breakdown, prompt engineering challenges, lessons learned from AI hallucinations and rate-limit traps, and behind-the-scenes engineering design artifacts.
+
 ### 2026-10-23 17:33:00 +05:30
 
 - Implemented dynamic AI model selection with automated multi-tier fallback cascade:

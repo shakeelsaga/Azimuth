@@ -164,7 +164,7 @@ export default function HomePage() {
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  padding: 'clamp(20px, 4vw, 48px)',
+                  padding: 'clamp(20px, 4vw, 48px) clamp(20px, 4vw, 48px) 0 clamp(20px, 4vw, 48px)',
                   gap: 'var(--section-gap)',
                   borderRight: '1px solid var(--color-faint-ash)',
                   maxWidth: '800px',

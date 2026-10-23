@@ -1,6 +1,22 @@
 # Changelog
 
-## v1.2.0 — Secure persistence and release readiness
+## v1.2.0: Secure persistence and release readiness
+
+### 2026-10-23 22:15:00 +05:30
+
+- Executed targeted polish and runtime stability fixes:
+  - **Nudged Kyoto Floating Preview 10px Further Up:** Updated `top` positioning in `HeroIntake.tsx` to `calc(clamp(60px, 10vh, 130px) - 30px)` so underlying `AZiMUTH` brandmark letterforms remain visible underneath.
+  - **Unified Navigation Bar & Absolute Page Centering:** Aligned `LandingHeader.tsx` to match `TopNavBar.tsx` styling (64px height, `var(--color-paper)` background, `var(--color-faint-ash)` border, `.nav-text-btn` typography with hover underline). Switched to a 3-column CSS grid layout (`gridTemplateColumns: '1fr auto 1fr'`) so the center navigation links ("Plan a Trip", "Features", "The Story") are mathematically centered to the entire viewport rather than biased left by right-side action buttons.
+  - **Application Red SOS Button:** Updated SOS emergency button in `TopNavBar.tsx` to the signature Arctic Tern red `#F01916` (`color: #ffffff`, hover `#d41411`, mobile icon `#F01916`).
+  - **Global Em Dash Removal:** Replaced all em dashes (`—`) across the entire repository (UI copy, notifications, toasts, and API error strings) with clean, natural sentence framing using commas, colons, or bullet dots (`•`).
+  - **Eliminated Next.js Duplicate/Empty Key Runtime Warning:** Resolved `Encountered two children with the same key, ""` by implementing `React.Children.toArray()` in `AnimatedList.tsx` and adding unique index fallbacks across all mapped lists (`QuickTweakDock.tsx`, `PackingBudgetSheet.tsx`, `FollowUpQuestions.tsx`, `DaySection.tsx`, `SavedTripsPanel.tsx`, `TripMap.tsx`, `PrintView.tsx`).
+
+### 2026-10-23 21:45:00 +05:30
+
+- Implemented targeted frontend visual refinements:
+  - **Nudged Kyoto Floating Preview Card:** Adjusted `top` positioning by 20px in `HeroIntake.tsx` (`calc(clamp(60px, 10vh, 130px) - 20px)`) so letters of the underlying monumental `AZiMUTH` brandmark remain partially visible.
+  - **Stuck Natural Language Tweak Dock to Screen Bottom:** Removed bottom padding from `<main>` in `page.tsx` (`padding: clamp(20px, 4vw, 48px) clamp(20px, 4vw, 48px) 0 clamp(20px, 4vw, 48px)`) and added explicit `marginBottom: 0` to `QuickTweakDock.tsx`, ensuring the dock container remains flush against the bottom edge without leaving an empty gap on full page scroll.
+  - **Universal Arrow Hover Glide Animation:** Implemented matching 6px translateX hover animation across all arrow pills and buttons (including "Get Started", "Create Account", "Sign In", "Build my trip", and "Quick Tweak" submit arrows) via component-level classes and universal rules in `globals.css`.
 
 ### 2026-10-23 19:05:00 +05:30
 
@@ -70,7 +86,7 @@
 ### 2026-10-23 15:25:00 +05:30
 
 - Refined Landing Page with Humane Copy and Alternating Scroll Showcase:
-  - Formatted features as 4 alternating floating scroll rows: Feature 1 (left image placeholder, right info), Feature 2 (right image placeholder, left info), Feature 3 (left image placeholder, right info), Feature 4 (right image placeholder, left info) — with animated reveals on scroll.
+  - Formatted features as 4 alternating floating scroll rows: Feature 1 (left image placeholder, right info), Feature 2 (right image placeholder, left info), Feature 3 (left image placeholder, right info), Feature 4 (right image placeholder, left info), with animated reveals on scroll.
   - Image placeholders automatically display any dropped images in `/assets/` (`feature_pacing.png`, `feature_map.png`, `feature_tweak.png`, `feature_budget.png`) or tasteful placeholder frames when not yet provided.
   - Replaced all AI/tech buzzwords (e.g. "Travel OS", "circadian vector engine") with grounded, natural, humane travel language throughout all new components.
   - Replaced circular logo containers with clean square containers across all brand wrappers (`LandingHeader.tsx`, `SaaSFooter.tsx`, `login/page.tsx`).
@@ -238,7 +254,7 @@
 - Confirmed that Twilio remains optional and unconfigured; Resend email delivery is the configured testing path.
 - Preserved the existing frontend deferral and backend API scope.
 
-## v1.1.0 — Backend foundation
+## v1.1.0: Backend foundation
 
 ### 2026-10-22 23:40:00 +05:30
 

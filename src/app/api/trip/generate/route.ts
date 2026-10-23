@@ -47,7 +47,7 @@ function normalizeGeneratedTrip(
 export async function POST(request: Request): Promise<Response> {
   const provider = getActiveProvider();
   if (!provider) {
-    return createApiError('api_key_missing', 'Running in demo mode — AI features need an API key.', 503);
+    return createApiError('api_key_missing', 'Running in demo mode: AI features need an API key.', 503);
   }
 
   const parsedRequest = await parseRequestBody(request, GenerateRequestSchema);

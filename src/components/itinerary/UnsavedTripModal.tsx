@@ -189,7 +189,7 @@ export function UnsavedTripModal({
               className="unsaved-modal-primary"
             >
               <span>{config.primaryLabel}</span>
-              <ArrowRight size={15} />
+              <ArrowRight size={15} className="btn-arrow" />
             </button>
 
             {config.showDiscard && onDiscardAndHome && (

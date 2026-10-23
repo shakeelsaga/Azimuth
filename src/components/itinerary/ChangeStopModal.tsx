@@ -15,8 +15,8 @@ interface ChangeStopModalProps {
 }
 
 const PRESET_REASONS = [
-  'Too tired — want something chill',
-  'Weather looks bad — need an indoor spot',
+  'Too tired, want something chill',
+  'Weather looks bad, need an indoor spot',
   'Looking for a cheaper option',
   'Short on time',
 ];
@@ -263,7 +263,7 @@ export function ChangeStopModal({
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {PRESET_REASONS.map((reason, index) => (
                   <button
-                    key={reason}
+                    key={`preset-reason-${index}`}
                     ref={index === 0 ? firstButtonRef : undefined}
                     type="button"
                     onClick={() => handleSelectReason(reason)}
@@ -339,7 +339,8 @@ export function ChangeStopModal({
                     boxSizing: 'border-box',
                   }}
                 >
-                  Next →
+                  <span>Next</span>{' '}
+                  <span className="btn-arrow">→</span>
                 </button>
               </div>
             </div>

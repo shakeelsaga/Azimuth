@@ -118,6 +118,33 @@ body {
   to { transform: rotate(360deg); }
 }
 
+/* === Universal Arrow Hover Glide Animation === */
+.cta-arrow,
+.btn-arrow,
+.arrow-glyph,
+.auth-btn-arrow,
+.build-trip-arrow,
+.showcase-arrow,
+.tweak-arrow {
+  display: inline-block;
+  transition: transform var(--transition-fast);
+}
+
+button:not(:disabled):hover .cta-arrow,
+button:not(:disabled):hover .btn-arrow,
+button:not(:disabled):hover .arrow-glyph,
+button:not(:disabled):hover .auth-btn-arrow,
+button:not(:disabled):hover .build-trip-arrow,
+button:not(:disabled):hover .tweak-arrow,
+a:hover .cta-arrow,
+a:hover .btn-arrow,
+a:hover .arrow-glyph,
+a:hover .auth-btn-arrow,
+a:hover .build-trip-arrow,
+a:hover .showcase-arrow {
+  transform: translateX(6px);
+}
+
 /* === Print Stylesheet === */
 @media print {
   nav, .tweak-dock, .map-container, .change-btn, .pill-selector,

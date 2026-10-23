@@ -190,7 +190,7 @@ describe('trip API routes', () => {
       },
       currentDayNumber: 1,
       stopToChange: kyotoTrip.days[0].stops[0],
-      reason: 'Too tired — want something chill',
+      reason: 'Too tired, want something chill',
       disposition: 'skip',
     }));
 

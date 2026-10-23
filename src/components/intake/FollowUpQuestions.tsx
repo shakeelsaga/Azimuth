@@ -83,7 +83,7 @@ export function FollowUpQuestions() {
         if (!res.ok) {
           const errData = await res.json().catch(() => ({}));
           if (res.status === 503 || errData.error === 'api_key_missing') {
-            setErrorBannerMessage('Running in demo mode — an API key is required for live AI generation. You can explore our pre-built itineraries below:');
+            setErrorBannerMessage('Running in demo mode: an API key is required for live AI generation. You can explore our pre-built itineraries below:');
           } else {
             setErrorBannerMessage("Couldn't generate questions right now. Try a sample trip or check your connection.");
           }
@@ -300,7 +300,7 @@ export function FollowUpQuestions() {
 
           return (
             <motion.div
-              key={q.id}
+              key={q.id || `question-${qIndex}`}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 + qIndex * 0.1, duration: 0.4 }}
@@ -321,12 +321,12 @@ export function FollowUpQuestions() {
 
               {/* Options pill buttons */}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                {q.options.map((option) => {
+                {q.options.map((option, optIndex) => {
                   const isSelected = selectedAnswer === option.label;
 
                   return (
                     <button
-                      key={option.label}
+                      key={`opt-${q.id || qIndex}-${optIndex}-${option.label || 'opt'}`}
                       type="button"
                       onClick={() => setUserAnswer(q.id, option.label)}
                       style={{
@@ -428,14 +428,35 @@ export function FollowUpQuestions() {
             fontWeight: 600,
             lineHeight: 1,
             cursor: allAnswered ? 'pointer' : 'not-allowed',
-            transition: 'background var(--transition-fast), color var(--transition-fast)',
+            transition: 'background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast)',
             fontFamily: 'inherit',
             boxSizing: 'border-box',
+            gap: '8px',
           }}
+          className="build-trip-btn"
         >
-          Build my trip →
+          <span>Build my trip</span>
+          <span
+            className="build-trip-arrow"
+            style={{
+              display: 'inline-block',
+              transition: 'transform var(--transition-fast)',
+            }}
+          >
+            →
+          </span>
         </button>
       </div>
+
+      <style>{`
+        .build-trip-btn:not(:disabled):hover {
+          background: #222222 !important;
+          transform: translateY(-1px);
+        }
+        .build-trip-btn:not(:disabled):hover .build-trip-arrow {
+          transform: translateX(6px);
+        }
+      `}</style>
     </motion.div>
   );
 }

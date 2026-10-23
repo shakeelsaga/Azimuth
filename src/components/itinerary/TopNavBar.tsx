@@ -269,12 +269,13 @@ export function TopNavBar({
           <button
             type="button"
             onClick={handleSosClick}
+            className="nav-sos-btn"
             style={{
               padding: '6px 14px',
               borderRadius: 'var(--radius-buttons)',
-              background: 'var(--color-faint-ash)',
-              border: '1px solid var(--color-ink)',
-              color: 'var(--color-ink)',
+              background: '#F01916',
+              border: '1px solid #F01916',
+              color: '#ffffff',
               fontSize: '13px',
               fontWeight: 700,
               cursor: 'pointer',
@@ -282,6 +283,7 @@ export function TopNavBar({
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
+              transition: 'background 0.15s ease, border-color 0.15s ease',
             }}
           >
             <ShieldAlert size={14} strokeWidth={2.2} />
@@ -322,7 +324,7 @@ export function TopNavBar({
             type="button"
             onClick={handleSosClick}
             aria-label="Emergency SOS"
-            style={{ background: 'none', border: 'none', padding: '4px', cursor: 'pointer', color: 'var(--color-ink)' }}
+            style={{ background: 'none', border: 'none', padding: '4px', cursor: 'pointer', color: '#F01916' }}
           >
             <AlertTriangle size={20} />
           </button>
@@ -332,6 +334,10 @@ export function TopNavBar({
       <style>{`
         .nav-text-btn:hover {
           text-decoration: underline;
+        }
+        .nav-sos-btn:hover {
+          background: #d41411 !important;
+          border-color: #d41411 !important;
         }
         @media (max-width: 900px) {
           .nav-center-status {

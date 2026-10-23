@@ -132,7 +132,7 @@ export function TripMap({ trip, activeDay, className = '' }: TripMapProps) {
 
           return (
             <Marker
-              key={stop.id}
+              key={stop.id || `map-stop-${index}`}
               longitude={stop.coordinates.lng}
               latitude={stop.coordinates.lat}
               anchor="center"

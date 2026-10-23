@@ -246,7 +246,7 @@ export function HeroIntake() {
         transition={{ delay: 0.6, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         style={{
           position: 'absolute',
-          top: 'clamp(60px, 10vh, 130px)',
+          top: 'calc(clamp(60px, 10vh, 130px) - 30px)',
           right: 'clamp(24px, 4vw, 56px)',
           borderRadius: 'var(--radius-cards)',
           padding: '24px',
@@ -671,7 +671,15 @@ export function HeroIntake() {
                   className="bottom-signup-btn"
                 >
                   <span>Create Account</span>
-                  <span className="arrow-glyph">→</span>
+                  <span
+                    className="arrow-glyph"
+                    style={{
+                      display: 'inline-block',
+                      transition: 'transform var(--transition-fast)',
+                    }}
+                  >
+                    →
+                  </span>
                 </Link>
                 <Link
                   href="/login?mode=signin"
@@ -781,7 +789,7 @@ export function HeroIntake() {
           transform: translateY(-1px);
         }
         .bottom-signup-btn:hover .arrow-glyph {
-          transform: translateX(4px);
+          transform: translateX(6px) !important;
         }
         .bottom-signin-btn:hover {
           border-color: var(--color-ink) !important;

@@ -275,7 +275,7 @@ export function FeatureShowcase() {
         reverse={true}
         label="Realistic Costs"
         title="Know what things cost before you head out."
-        description="A clear, realistic estimate of daily costs for your stay, food, and transit — shown in Indian Rupee (₹) alongside the local currency, with sensible tips to save money."
+        description="A clear, realistic estimate of daily costs for your stay, food, and transit, shown in Indian Rupee (₹) alongside the local currency, with sensible tips to save money."
         details={[
           'Dual currency (₹ INR alongside local currency)',
           'Clear daily estimates for stay, meals, and getting around',

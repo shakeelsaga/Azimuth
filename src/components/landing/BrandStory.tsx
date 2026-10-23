@@ -63,7 +63,7 @@ export function BrandStory() {
             }}
           >
             <p style={{ margin: 0 }}>
-              In navigation, an <strong>azimuth</strong> is your compass bearing from where you stand to where you want to go. It is a true direction, not an overwhelming bucket list. We built Azimuth to give travelers that same clarity — turning scattered ideas into realistic, day-by-day plans you can actually enjoy.
+              In navigation, an <strong>azimuth</strong> is your compass bearing from where you stand to where you want to go. It is a true direction, not an overwhelming bucket list. We built Azimuth to give travelers that same clarity, turning scattered ideas into realistic, day-by-day plans you can actually enjoy.
             </p>
 
             <p style={{ margin: 0 }}>

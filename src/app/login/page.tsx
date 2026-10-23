@@ -877,15 +877,59 @@ function LoginContent() {
               {isPending ? (
                 <span>Processing...</span>
               ) : mode === 'signup' ? (
-                <span>Create Account →</span>
+                <>
+                  <span>Create Account</span>
+                  <span
+                    className="auth-btn-arrow"
+                    style={{
+                      display: 'inline-block',
+                      transition: 'transform var(--transition-fast)',
+                    }}
+                  >
+                    →
+                  </span>
+                </>
               ) : mode === 'forgot' ? (
                 forgotStep === 'request' ? (
-                  <span>Send 6-Digit Reset Code →</span>
+                  <>
+                    <span>Send 6-Digit Reset Code</span>
+                    <span
+                      className="auth-btn-arrow"
+                      style={{
+                        display: 'inline-block',
+                        transition: 'transform var(--transition-fast)',
+                      }}
+                    >
+                      →
+                    </span>
+                  </>
                 ) : (
-                  <span>Update Password & Sign In →</span>
+                  <>
+                    <span>Update Password & Sign In</span>
+                    <span
+                      className="auth-btn-arrow"
+                      style={{
+                        display: 'inline-block',
+                        transition: 'transform var(--transition-fast)',
+                      }}
+                    >
+                      →
+                    </span>
+                  </>
                 )
               ) : (
-                <span>Sign In →</span>
+                <>
+                  <span>Sign In</span>
+                  <span
+                    className="auth-btn-arrow"
+                    style={{
+                      display: 'inline-block',
+                      transition: 'transform var(--transition-fast)',
+                    }}
+                  >
+                    →
+                  </span>
+                </>
               )}
             </button>
           </form>
@@ -1030,6 +1074,9 @@ function LoginContent() {
         .submit-auth-btn:not(:disabled):hover {
           transform: translateY(-1px);
           background: #1e1e1e !important;
+        }
+        .submit-auth-btn:not(:disabled):hover .auth-btn-arrow {
+          transform: translateX(6px);
         }
       `}</style>
     </div>

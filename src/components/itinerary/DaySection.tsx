@@ -17,7 +17,7 @@ export function DaySection({ day, weather, onChangeStop }: DaySectionProps) {
   const elements = day.stops.flatMap((stop, index) => {
     const card = (
       <StopCard
-        key={`stop-${stop.id}`}
+        key={`stop-${stop.id || index}-${index}`}
         stop={stop}
         dayNumber={day.dayNumber}
         stopIndex={index}
@@ -29,7 +29,7 @@ export function DaySection({ day, weather, onChangeStop }: DaySectionProps) {
       const nextStop = day.stops[index + 1];
       const bridge = (
         <TransitBridge
-          key={`bridge-${stop.id}-${nextStop.id}`}
+          key={`bridge-${stop.id || index}-${nextStop.id || index + 1}-${index}`}
           fromStop={stop}
           toStop={nextStop}
         />

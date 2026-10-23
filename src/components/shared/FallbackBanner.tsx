@@ -25,7 +25,7 @@ export function FallbackBanner({ message }: FallbackBannerProps) {
         margin: 0,
         color: 'var(--color-ink)',
       }}>
-        {message ?? 'Running in demo mode — AI features need an API key.'}
+        {message ?? 'Running in demo mode: AI features need an API key.'}
       </p>
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
         <button

@@ -108,7 +108,7 @@ export function SosEmergencyModal({ isOpen, trip, onClose }: SosEmergencyModalPr
         if (data.delivered) {
           showToast('Emergency alert dispatched to your contacts.', 'info');
         } else {
-          showToast('SOS alert logged in database! (Sandbox mode: domain verification pending — copy emergency link)', 'info');
+          showToast('SOS alert logged in database! (Sandbox mode: domain verification pending, copy emergency link)', 'info');
         }
       } else {
         if (res.status === 409 || data.error === 'contacts_required') {
@@ -267,7 +267,7 @@ export function SosEmergencyModal({ isOpen, trip, onClose }: SosEmergencyModalPr
                 }}
               >
                 <span>Open Profile & SOS Settings</span>
-                <ArrowRight size={13} />
+                <ArrowRight size={13} className="btn-arrow" />
               </Link>
             </div>
           )}

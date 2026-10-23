@@ -179,7 +179,7 @@ export async function POST(request: Request): Promise<Response> {
   const mapUrl = `https://maps.google.com/?q=${parsed.data.latitude},${parsed.data.longitude}`;
   const coordinatesStr = `${parsed.data.latitude}, ${parsed.data.longitude}`;
   const message = [
-    `EMERGENCY SOS ALERT — Traveler in Need of Assistance`,
+    `EMERGENCY SOS ALERT: Traveler in Need of Assistance`,
     `----------------------------------------------------`,
     `Traveler: ${travelerName} (${travelerEmail})`,
     `Live Location: ${mapUrl}`,

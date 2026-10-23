@@ -21,23 +21,22 @@ export function LandingHeader() {
 
   return (
     <header
+      className="top-nav-bar"
       style={{
         position: 'sticky',
         top: 0,
-        zIndex: 50,
-        background: 'rgba(250, 250, 248, 0.94)',
-        backdropFilter: 'blur(12px)',
-        borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
+        zIndex: 'var(--z-sticky)',
+        background: 'var(--color-paper)',
+        borderBottom: '1px solid var(--color-faint-ash)',
         height: '64px',
-        display: 'flex',
+        display: 'grid',
+        gridTemplateColumns: '1fr auto 1fr',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 clamp(16px, 4vw, 48px)',
-        transition: 'background var(--transition-fast)',
+        padding: '0 clamp(16px, 3vw, 40px)',
       }}
     >
-      {/* Brand Wordmark with Square Logo Container */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      {/* Brand Wordmark with Square Logo Container (Left) */}
+      <div style={{ display: 'flex', alignItems: 'center', justifySelf: 'start', gap: '10px' }}>
         <Link
           href="/"
           style={{
@@ -49,32 +48,33 @@ export function LandingHeader() {
           }}
           aria-label="AZiMUTH Home"
         >
-          <AzimuthLogo size={32} />
-          <AzimuthWordmark size="16px" />
+          <AzimuthLogo size={28} />
+          <AzimuthWordmark size="14px" />
         </Link>
       </div>
 
-      {/* Center Nav Links - Smooth Scroll */}
+      {/* Center Nav Links - Truly centered relative to entire page */}
       <nav
         className="header-nav-links"
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '28px',
+          justifyContent: 'center',
+          gap: 'clamp(16px, 2.5vw, 28px)',
+          justifySelf: 'center',
         }}
       >
         <button
           type="button"
           onClick={() => scrollTo('planner-intake')}
-          className="nav-link-btn"
+          className="nav-text-btn"
           style={{
             background: 'none',
             border: 'none',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 500,
-            color: 'var(--color-charcoal)',
             padding: 0,
+            fontSize: 'var(--text-body-sm)',
+            color: 'var(--color-ink)',
+            cursor: 'pointer',
             fontFamily: 'inherit',
           }}
         >
@@ -83,15 +83,14 @@ export function LandingHeader() {
         <button
           type="button"
           onClick={() => scrollTo('features-section')}
-          className="nav-link-btn"
+          className="nav-text-btn"
           style={{
             background: 'none',
             border: 'none',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 500,
-            color: 'var(--color-charcoal)',
             padding: 0,
+            fontSize: 'var(--text-body-sm)',
+            color: 'var(--color-ink)',
+            cursor: 'pointer',
             fontFamily: 'inherit',
           }}
         >
@@ -100,15 +99,14 @@ export function LandingHeader() {
         <button
           type="button"
           onClick={() => scrollTo('story-section')}
-          className="nav-link-btn"
+          className="nav-text-btn"
           style={{
             background: 'none',
             border: 'none',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 500,
-            color: 'var(--color-charcoal)',
             padding: 0,
+            fontSize: 'var(--text-body-sm)',
+            color: 'var(--color-ink)',
+            cursor: 'pointer',
             fontFamily: 'inherit',
           }}
         >
@@ -116,8 +114,8 @@ export function LandingHeader() {
         </button>
       </nav>
 
-      {/* Right Action: Demo Trigger & Auth */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      {/* Right Action: Demo Trigger & Auth (Right) */}
+      <div style={{ display: 'flex', alignItems: 'center', justifySelf: 'end', gap: '12px' }}>
         <button
           type="button"
           onClick={() => loadDemoTrip('kyoto')}
@@ -176,18 +174,25 @@ export function LandingHeader() {
               className="header-signup-btn"
             >
               <span>Get Started</span>
-              <ArrowRight size={13} />
+              <ArrowRight
+                size={13}
+                className="btn-arrow"
+                style={{
+                  display: 'inline-block',
+                  transition: 'transform var(--transition-fast)',
+                }}
+              />
             </Link>
           </div>
         )}
       </div>
 
       <style>{`
-        .nav-link-btn {
+        .nav-text-btn {
           transition: color var(--transition-fast);
         }
-        .nav-link-btn:hover {
-          color: var(--color-ink) !important;
+        .nav-text-btn:hover {
+          text-decoration: underline;
         }
         .header-demo-btn:hover {
           background: #e6e5e0 !important;
@@ -199,6 +204,9 @@ export function LandingHeader() {
         .header-signup-btn:hover {
           background: #242424 !important;
           transform: translateY(-1px);
+        }
+        .header-signup-btn:hover .btn-arrow {
+          transform: translateX(6px);
         }
         @media (max-width: 768px) {
           .header-nav-links {

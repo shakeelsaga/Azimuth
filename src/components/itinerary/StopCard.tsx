@@ -355,7 +355,7 @@ export function StopCard({ stop, dayNumber, stopIndex, onChangeStop }: StopCardP
             >
               <div style={{ fontSize: 'var(--text-caption)', fontWeight: 600, color: 'var(--color-ink)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <UtensilsCrossed size={13} style={{ flexShrink: 0, color: 'var(--color-ink)' }} />
-                <span>{stop.foodSpot.name} — Try the {stop.foodSpot.dishToTry}</span>
+                <span>{stop.foodSpot.name} • Try the {stop.foodSpot.dishToTry}</span>
               </div>
               {stop.foodSpot.vibe && (
                 <div style={{ fontSize: '13px', color: 'var(--color-steel)', paddingLeft: '19px' }}>
@@ -436,7 +436,8 @@ export function StopCard({ stop, dayNumber, stopIndex, onChangeStop }: StopCardP
                 fontFamily: 'inherit',
               }}
             >
-              Change this plan →
+              <span>Change this plan</span>{' '}
+              <span className="btn-arrow">→</span>
             </button>
           </div>
         </>

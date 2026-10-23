@@ -121,16 +121,17 @@ export function QuickTweakDock({ trip }: QuickTweakDockProps) {
         gap: '12px',
         border: '1px solid #333333',
         borderBottom: 'none',
+        marginBottom: 0,
       }}
     >
       {/* Suggested prompts (visible when input is empty and not clarifying) */}
       {!inputVal && !clarification && suggestedPrompts.length > 0 && (
         <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', scrollbarWidth: 'none', paddingBottom: '2px' }}>
-          {suggestedPrompts.map((prompt) => {
+          {suggestedPrompts.map((prompt, idx) => {
             const isThisPromptActive = isSubmitting && submittingPrompt === prompt;
             return (
               <button
-                key={prompt}
+                key={`suggested-tweak-${idx}-${prompt || 'p'}`}
                 type="button"
                 disabled={isSubmitting}
                 onClick={() => {
@@ -302,7 +303,7 @@ export function QuickTweakDock({ trip }: QuickTweakDockProps) {
 
       <style>{`
         .tweak-submit-btn:not(:disabled):hover .tweak-arrow {
-          transform: translateX(4px);
+          transform: translateX(6px);
         }
         @keyframes tweakDotPulse {
           0%, 80%, 100% {

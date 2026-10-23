@@ -37,12 +37,12 @@ export function DaySelector({
       {/* ===== Desktop: Vertical Tonal Stack ===== */}
       <div className="desktop-day-selector" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {days.map((day) => {
+          {days.map((day, dIdx) => {
             const isActive = day.dayNumber === activeDayNumber;
             const formattedNum = String(day.dayNumber).padStart(2, '0');
 
             return (
-              <div key={day.dayNumber} style={{ display: 'flex', flexDirection: 'column' }}>
+              <div key={`day-item-${day.dayNumber ?? dIdx}`} style={{ display: 'flex', flexDirection: 'column' }}>
                 <button
                   type="button"
                   onClick={() => onSelectDay(day.dayNumber)}
@@ -118,13 +118,13 @@ export function DaySelector({
           WebkitOverflowScrolling: 'touch',
         }}
       >
-        {days.map((day) => {
+        {days.map((day, dIdx) => {
           const isActive = day.dayNumber === activeDayNumber;
           const formattedNum = String(day.dayNumber).padStart(2, '0');
 
           return (
             <button
-              key={`m-day-${day.dayNumber}`}
+              key={`m-day-${day.dayNumber ?? dIdx}`}
               data-day={day.dayNumber}
               type="button"
               onClick={() => onSelectDay(day.dayNumber)}

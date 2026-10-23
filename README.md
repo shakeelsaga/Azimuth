@@ -33,7 +33,7 @@
 > **👉 [https://azimuth-jcg8.onrender.com](https://azimuth-jcg8.onrender.com)**  
 > *(Note: Render free tier instances spin down after inactivity; initial cold starts take ~30–45 seconds to wake up).*
 
-**AZiMUTH** is a comprehensive travel planning application designed to turn open-ended travel ideas into balanced, day-by-day itineraries. Inspired by the incredible navigation of the **Arctic Tern**—a bird that journeys over 44,000 miles each year from pole to pole—Azimuth combines structured travel pacing, interactive mapping, budget tracking, weather context, and emergency SOS routing into a single, intuitive workspace.
+**AZiMUTH** is a comprehensive travel planning application designed to turn open-ended travel ideas into balanced, day-by-day itineraries. Inspired by the incredible navigation of the **Arctic Tern** (a bird that journeys over 44,000 miles each year from pole to pole), Azimuth combines structured travel pacing, interactive mapping, budget tracking, weather context, and emergency SOS routing into a single, intuitive workspace.
 
 Built with **Next.js 15 (App Router)**, **React 19**, **Tailwind CSS**, and **Prisma ORM**, Azimuth pairs modern full-stack web architecture with an automated multi-tier AI model cascade to deliver fast, reliable travel generation even under strict free-tier rate limits.
 

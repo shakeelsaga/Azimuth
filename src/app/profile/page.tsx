@@ -501,9 +501,9 @@ function ProfileContent() {
                 No emergency contacts configured yet. Add your trusted contacts below to enable instant SOS protection.
               </div>
             ) : (
-              contacts.map((contact) => (
+              contacts.map((contact, idx) => (
                 <div
-                  key={contact.id}
+                  key={contact.id || `contact-${idx}`}
                   style={{
                     display: 'flex',
                     alignItems: 'center',

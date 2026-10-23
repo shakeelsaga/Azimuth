@@ -22,7 +22,7 @@ export function PrintView({ trip }: PrintViewProps) {
           AZ<span style={{ color: '#F01916' }}>i</span>MUTH
         </h1>
         <div style={{ fontSize: '16pt', marginTop: '6pt', fontWeight: 600 }}>
-          {trip.destination}, {trip.country} — {trip.daysCount} {trip.daysCount === 1 ? 'Day' : 'Days'}
+          {trip.destination}, {trip.country} • {trip.daysCount} {trip.daysCount === 1 ? 'Day' : 'Days'}
         </div>
         {trip.friendlyIntro && (
           <p style={{ fontSize: '11pt', fontStyle: 'italic', maxWidth: '600px', margin: '10pt auto 0 auto', color: '#444' }}>
@@ -40,7 +40,7 @@ export function PrintView({ trip }: PrintViewProps) {
         >
           <div style={{ borderBottom: '2pt solid #000', paddingBottom: '6pt', marginBottom: '14pt' }}>
             <h2 style={{ fontSize: '18pt', margin: 0, fontWeight: 700 }}>
-              DAY {String(day.dayNumber).padStart(2, '0')} — {day.title}
+              DAY {String(day.dayNumber).padStart(2, '0')}: {day.title}
             </h2>
             {day.neighborhoodFocus && (
               <div style={{ fontSize: '10pt', color: '#555', marginTop: '2pt' }}>
@@ -56,7 +56,7 @@ export function PrintView({ trip }: PrintViewProps) {
               const bridge = nextStop ? getTransitBridgeInfo(stop, nextStop) : null;
 
               return (
-                <div key={`print-stop-${stop.id}`}>
+                <div key={`print-stop-${stop.id || sIndex}-${sIndex}`}>
                   <div
                     className="stop-card"
                     style={{
@@ -67,7 +67,7 @@ export function PrintView({ trip }: PrintViewProps) {
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4pt' }}>
                       <span style={{ fontWeight: 700, fontSize: '11pt' }}>
-                        {stop.startTime} • {stop.timeSlot} — {stop.title}
+                        {stop.startTime} • {stop.timeSlot} • {stop.title}
                       </span>
                       <span style={{ fontSize: '9pt', textTransform: 'uppercase', color: '#555' }}>
                         {stop.category}
@@ -92,7 +92,7 @@ export function PrintView({ trip }: PrintViewProps) {
 
                     {stop.foodSpot && (
                       <div style={{ marginTop: '5pt', fontSize: '9pt', background: '#f5f5f5', padding: '4pt 6pt' }}>
-                        <strong>Food:</strong> {stop.foodSpot.name} — Try the {stop.foodSpot.dishToTry} ({stop.foodSpot.vibe})
+                        <strong>Food:</strong> {stop.foodSpot.name} • Try the {stop.foodSpot.dishToTry} ({stop.foodSpot.vibe})
                       </div>
                     )}
 
@@ -113,7 +113,7 @@ export function PrintView({ trip }: PrintViewProps) {
                         fontStyle: 'italic',
                       }}
                     >
-                      ↓ {bridge.mode}: {bridge.distanceDisplay} ({bridge.durationDisplay}) — {bridge.bufferNote}
+                      ↓ {bridge.mode}: {bridge.distanceDisplay} ({bridge.durationDisplay}) • {bridge.bufferNote}
                     </div>
                   )}
                 </div>
@@ -154,8 +154,8 @@ export function PrintView({ trip }: PrintViewProps) {
           <div style={{ marginTop: '16pt' }}>
             <h3 style={{ fontSize: '14pt', fontWeight: 700, margin: '0 0 6pt 0' }}>Key Packing Items</h3>
             <ul style={{ margin: 0, paddingLeft: '16pt', fontSize: '10pt' }}>
-              {trip.packingItems.map((p) => (
-                <li key={p.item} style={{ marginBottom: '3pt' }}>
+              {trip.packingItems.map((p, pIndex) => (
+                <li key={`print-pack-${pIndex}-${p.item || 'item'}`} style={{ marginBottom: '3pt' }}>
                   <strong>{p.item}</strong>: {p.reason}
                 </li>
               ))}

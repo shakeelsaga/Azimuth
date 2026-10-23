@@ -13,7 +13,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Azimuth — AI Travel Planner',
+  title: 'Azimuth | AI Travel Planner',
   description: 'A calm, AI-powered travel planner that builds realistic day-by-day itineraries in seconds.',
   icons: {
     icon: '/assets/Azimuth_Logo.png',

@@ -279,11 +279,11 @@ export function PackingBudgetSheet({ isOpen, trip, onClose }: PackingBudgetSheet
                 Pack These
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {packing.map((pack) => {
+                {packing.map((pack, idx) => {
                   const isChecked = Boolean(checkedItems[pack.item]);
                   return (
                     <div
-                      key={pack.item}
+                      key={`pack-${idx}-${pack.item || 'item'}`}
                       onClick={() => toggleCheck(pack.item)}
                       style={{
                         display: 'flex',

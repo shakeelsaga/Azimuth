@@ -138,12 +138,13 @@ export function SavedTripsPanel({ isOpen, onClose }: SavedTripsPanelProps) {
                   fontFamily: 'inherit',
                 }}
               >
-                Start planning →
+                <span>Start planning</span>{' '}
+                <span className="btn-arrow">→</span>
               </button>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              {savedTrips.map((item) => {
+              {savedTrips.map((item, index) => {
                 const dateStr = new Date(item.savedAt).toLocaleDateString(undefined, {
                   month: 'short',
                   day: 'numeric',
@@ -152,7 +153,7 @@ export function SavedTripsPanel({ isOpen, onClose }: SavedTripsPanelProps) {
 
                 return (
                   <div
-                    key={item.id}
+                    key={item.id || `saved-trip-${index}`}
                     style={{
                       background: 'var(--color-faint-ash)',
                       borderRadius: 'var(--radius-cards)',
@@ -191,7 +192,8 @@ export function SavedTripsPanel({ isOpen, onClose }: SavedTripsPanelProps) {
                           fontFamily: 'inherit',
                         }}
                       >
-                        Open trip →
+                        <span>Open trip</span>{' '}
+                        <span className="btn-arrow">→</span>
                       </button>
                       <button
                         type="button"

@@ -9,12 +9,24 @@ export function hashOpaqueToken(token: string): string {
   return createHash('sha256').update(token).digest('hex');
 }
 
+export function generateNumericCode(length = 6): string {
+  const digits = '0123456789';
+  let code = '';
+  const bytes = randomBytes(length);
+  for (let i = 0; i < length; i++) {
+    code += digits[bytes[i] % 10];
+  }
+  return code;
+}
+
 export async function sendAuthEmail(input: {
   to: string;
   subject: string;
   text: string;
+  html?: string;
 }): Promise<boolean> {
-  if (!process.env.RESEND_API_KEY || !process.env.AUTH_FROM_EMAIL) return false;
+  const fromEmail = process.env.AUTH_FROM_EMAIL || process.env.SOS_FROM_EMAIL;
+  if (!process.env.RESEND_API_KEY || !fromEmail) return false;
 
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -23,11 +35,13 @@ export async function sendAuthEmail(input: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: process.env.AUTH_FROM_EMAIL,
+      from: fromEmail,
       to: [input.to],
       subject: input.subject,
       text: input.text,
+      ...(input.html ? { html: input.html } : {}),
     }),
   });
   return response.ok;
 }
+

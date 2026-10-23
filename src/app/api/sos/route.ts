@@ -14,17 +14,60 @@ const SosSchema = z.object({
 type Contact = { name: string; email: string | null; phone: string | null };
 type DeliveryResult = { provider: 'email' | 'sms'; status: 'sent' | 'failed' | 'skipped'; errorCode?: string };
 
-async function sendEmail(contact: Contact, message: string): Promise<DeliveryResult> {
-  if (!contact.email || !process.env.RESEND_API_KEY || !process.env.SOS_FROM_EMAIL) return { provider: 'email', status: 'skipped' };
+async function sendEmail(
+  contact: Contact,
+  message: string,
+  travelerName: string,
+  travelerEmail: string,
+  mapUrl: string,
+  coordinates: string,
+): Promise<DeliveryResult> {
+  const fromEmail = process.env.SOS_FROM_EMAIL || process.env.AUTH_FROM_EMAIL;
+  if (!contact.email || !process.env.RESEND_API_KEY || !fromEmail) return { provider: 'email', status: 'skipped' };
   try {
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from: process.env.SOS_FROM_EMAIL,
+        from: fromEmail,
         to: [contact.email],
-        subject: 'Azimuth emergency alert',
+        subject: `🚨 EMERGENCY ALERT: ${travelerName} has triggered an SOS`,
         text: message,
+        html: `
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 2px solid #b91c1c; border-radius: 8px; background: #ffffff;">
+            <div style="background: #b91c1c; color: #ffffff; padding: 10px 16px; border-radius: 4px; font-weight: 700; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase;">
+              🚨 Azimuth Emergency SOS Alert
+            </div>
+            <h2 style="color: #111111; margin: 20px 0 12px 0; font-size: 22px;">
+              ${travelerName} needs assistance
+            </h2>
+            <p style="color: #444444; font-size: 15px; line-height: 1.5; margin: 0 0 16px 0;">
+              You are listed as a trusted emergency contact for <strong>${travelerName}</strong> (<a href="mailto:${travelerEmail}" style="color: #111111;">${travelerEmail}</a>). They have just triggered an emergency SOS alert.
+            </p>
+            <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 16px; margin: 20px 0;">
+              <div style="font-size: 12px; font-weight: 700; color: #991b1b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.04em;">
+                Emergency Details
+              </div>
+              <div style="font-size: 14px; color: #111111; margin-bottom: 6px;">
+                <strong>Traveler:</strong> ${travelerName} (${travelerEmail})
+              </div>
+              <div style="font-size: 14px; color: #111111; margin-bottom: 6px;">
+                <strong>Coordinates:</strong> ${coordinates}
+              </div>
+              <div style="font-size: 14px; color: #111111;">
+                <strong>Time of Alert:</strong> ${new Date().toUTCString()}
+              </div>
+            </div>
+            <div style="margin: 24px 0;">
+              <a href="${mapUrl}" style="background: #111111; color: #ffffff; padding: 13px 24px; text-decoration: none; border-radius: 6px; font-weight: 700; font-size: 14px; display: inline-block;">
+                View Live Location on Google Maps →
+              </a>
+            </div>
+            <p style="color: #777777; font-size: 13px; line-height: 1.4; margin: 20px 0 0 0; border-top: 1px solid #eeeeee; padding-top: 16px;">
+              Please check in on ${travelerName} immediately or contact local emergency responders if you cannot reach them.
+            </p>
+          </div>
+        `,
       }),
     });
     if (!response.ok) return { provider: 'email', status: 'failed', errorCode: `http_${response.status}` };
@@ -73,6 +116,13 @@ export async function POST(request: Request): Promise<Response> {
   const parsed = SosSchema.safeParse(body);
   if (!parsed.success) return createApiError('validation_failed', 'Live location is required for an SOS alert.', 400);
 
+  const dbUser = await prisma.user.findUnique({
+    where: { id: user.id },
+    select: { name: true, email: true },
+  });
+  const travelerName = dbUser?.name || 'Azimuth Traveler';
+  const travelerEmail = dbUser?.email || user.email || 'Registered account';
+
   const contacts = await prisma.emergencyContact.findMany({
     where: { userId: user.id },
     select: { name: true, email: true, phone: true },
@@ -87,11 +137,19 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const mapUrl = `https://maps.google.com/?q=${parsed.data.latitude},${parsed.data.longitude}`;
+  const coordinatesStr = `${parsed.data.latitude}, ${parsed.data.longitude}`;
   const message = [
-    'Azimuth emergency alert: the traveler may need help.',
-    `Live location: ${mapUrl}`,
-    `Recent activity: ${parsed.data.recentActivity || 'Not provided.'}`,
+    `EMERGENCY SOS ALERT — Traveler in Need of Assistance`,
+    `----------------------------------------------------`,
+    `Traveler: ${travelerName} (${travelerEmail})`,
+    `Live Location: ${mapUrl}`,
+    `Coordinates: ${coordinatesStr}`,
+    `Recent Activity: ${parsed.data.recentActivity || 'Emergency alert dispatched from Azimuth planner.'}`,
+    `Dispatched At: ${new Date().toUTCString()}`,
+    `----------------------------------------------------`,
+    `You are receiving this urgent broadcast because ${travelerName} added you as a trusted emergency contact in Azimuth. Please check in with them immediately or notify local emergency services if you cannot make contact.`,
   ].join('\n');
+
   const event = await prisma.sosEvent.create({
     data: {
       userId: user.id,
@@ -103,7 +161,7 @@ export async function POST(request: Request): Promise<Response> {
   });
 
   const deliveryResults = await Promise.all(contacts.flatMap((contact) => [
-    sendEmail(contact, message),
+    sendEmail(contact, message, travelerName, travelerEmail, mapUrl, coordinatesStr),
     sendSms(contact, message),
   ]));
   await prisma.sosDelivery.createMany({

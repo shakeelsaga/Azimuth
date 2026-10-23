@@ -3,6 +3,7 @@ import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 const mocks = vi.hoisted(() => ({
   generateObject: vi.fn(),
   getLanguageModel: vi.fn(() => ({})),
+  getAlternativeModel: vi.fn(() => null),
   getLlmAbortSignal: vi.fn(() => AbortSignal.timeout(1_000)),
   getWeatherForecast: vi.fn(),
   generateWeatherSummary: vi.fn(),
@@ -11,6 +12,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock('ai', () => ({ generateObject: mocks.generateObject }));
 vi.mock('@/lib/ai', () => ({
   getLanguageModel: mocks.getLanguageModel,
+  getAlternativeModel: mocks.getAlternativeModel,
   getLlmAbortSignal: mocks.getLlmAbortSignal,
 }));
 vi.mock('@/lib/weather', () => ({

@@ -119,7 +119,7 @@ export const TripPlanSchema = z.object({
   daysCount: z.number().int().min(1).max(7),
   centerCoordinates: CoordinatesSchema,
   friendlyIntro: z.string().trim().min(1).max(700).describe('Two calm, welcoming sentences that summarize the trip.'),
-  suggestedTweakPrompts: z.array(z.string().trim().min(1).max(160)).length(3),
+  suggestedTweakPrompts: z.array(z.string().trim().min(1).max(160)).min(2).max(5),
   budgetSummary: z.object({
     currencyNote: z.string().trim().min(1).max(300),
     dailyAverageUSD: z.number().finite().min(0),
@@ -133,8 +133,8 @@ export const TripPlanSchema = z.object({
       item: z.string().trim().min(1).max(120),
       reason: z.string().trim().min(1).max(300),
     }),
-  ).length(5),
-  beforeYouGoTips: z.array(z.string().trim().min(1).max(400)).length(3),
+  ).min(3).max(6),
+  beforeYouGoTips: z.array(z.string().trim().min(1).max(400)).min(2).max(5),
   days: z.array(DayPlanSchema).min(1).max(7),
 });
 

@@ -70,6 +70,7 @@ export async function POST(request: Request): Promise<Response> {
         `Every place must really exist in ${input.destination}; coordinates must be accurate and within 30 km of ${input.lat}, ${input.lng}.`,
         'Keep consecutive stops geographically close, ideally under 5 km apart. Include practical notes about crowds, closures, and timing.',
         'Include a local food spot for at least two stops each day and an overnight suggestion for the final stop each day.',
+        'Include 3 to 5 practical packing items, 3 before-you-go tips, and 3 suggested tweak prompts.',
         `Respect the ${input.structuralParams.budgetPreference} budget.`,
         'Speak like a thoughtful local friend. Never use jargon, technical terms, marketing speak, or robotic language.',
       ].join(' '),

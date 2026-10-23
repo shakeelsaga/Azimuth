@@ -1,13 +1,68 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #ffffff;
-  --ink: #000000;
-  --faint-ash: #eeeeee;
-  --steel: #888a8b;
-  --charcoal: #222222;
-  --radius-card: 9.6px;
-  --radius-pill: 9999px;
+  /* Colors */
+  --color-ink: #000000;
+  --color-paper: #ffffff;
+  --color-faint-ash: #eeeeee;
+  --color-steel: #888a8b;
+  --color-charcoal: #222222;
+  --color-showcase: #FFE600;
+
+  /* Typography */
+  --font-primary: var(--font-inter), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --text-caption: 14px;
+  --leading-caption: 1.4;
+  --tracking-caption: 0.01em;
+  --text-body-sm: 17px;
+  --leading-body-sm: 1.5;
+  --tracking-body-sm: 0px;
+  --text-subheading: 19px;
+  --leading-subheading: 1.5;
+  --tracking-subheading: 0px;
+  --text-heading: clamp(28px, 3.5vw, 43px);
+  --leading-heading: 1.21;
+  --tracking-heading: -0.010em;
+  --text-heading-lg: clamp(36px, 5vw, 55px);
+  --leading-heading-lg: 1.13;
+  --tracking-heading-lg: -0.020em;
+  --text-display: clamp(56px, 9vw, 120px);
+  --leading-display: 1.05;
+  --tracking-display: -0.057em;
+  --text-display-xl: clamp(72px, 14vw, 211px);
+  --leading-display-xl: 1;
+  --tracking-display-xl: -0.057em;
+
+  /* Spacing & Layout */
+  --spacing-unit: 4px;
+  --spacing-24: 24px;
+  --spacing-56: 56px;
+  --spacing-96: 96px;
+  --page-max-width: 1200px;
+  --section-gap: 58px;
+  --card-padding: 24px;
+  --element-gap: 23px;
+
+  /* Border Radius */
+  --radius-tags: 9999px;
+  --radius-cards: 9.6px;
+  --radius-small: 4.8px;
+  --radius-medium: 7.2px;
+  --radius-buttons: 9999px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-medium: 200ms ease;
+  --transition-smooth: 300ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Z-index Scale */
+  --z-base: 0;
+  --z-cards: 10;
+  --z-sticky: 100;
+  --z-overlay: 200;
+  --z-modal: 300;
+  --z-toast: 400;
 }
 
 * {
@@ -18,6 +73,119 @@ html,
 body {
   min-height: 100%;
   margin: 0;
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-primary);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* === Uiverse-inspired Loader Keyframes === */
+@keyframes uiverse-fold {
+  0%, 10% {
+    transform: perspective(140px) rotateX(-180deg);
+    opacity: 0;
+  }
+  25%, 75% {
+    transform: perspective(140px) rotateX(0deg);
+    opacity: 1;
+  }
+  90%, 100% {
+    transform: perspective(140px) rotateY(180deg);
+    opacity: 0;
+  }
+}
+
+@keyframes uiverse-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+@keyframes uiverse-bars {
+  0%, 40%, 100% { transform: scaleY(0.4); }
+  20% { transform: scaleY(1); }
+}
+
+@keyframes loader-dots {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* === Print Stylesheet === */
+@media print {
+  nav, .tweak-dock, .map-container, .change-btn, .pill-selector,
+  .modal-overlay, .toast, .map-toggle-btn, .share-btn, .save-btn,
+  .day-selector-mobile, button, [role="dialog"],
+  .top-nav-bar, .quick-tweak-dock, .map-column,
+  .saved-trips-panel, .packing-budget-sheet {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+    font-family: var(--font-primary) !important;
+  }
+
+  .day-section {
+    display: block !important;
+    page-break-inside: avoid;
+  }
+
+  .day-section:not(:first-of-type) {
+    page-break-before: always;
+  }
+
+  .stop-card {
+    border: 1px solid #000 !important;
+    background: white !important;
+    border-radius: 0 !important;
+    margin-bottom: 12pt !important;
+    padding: 12pt !important;
+    page-break-inside: avoid;
+  }
+
+  .transit-bridge {
+    border: none !important;
+    background: none !important;
+    padding: 4pt 0 !important;
+    font-size: 10pt !important;
+    color: #666 !important;
+  }
+
+  .print-header {
+    display: block !important;
+    text-align: center;
+    margin-bottom: 24pt;
+  }
+
+  @page {
+    margin: 2cm;
+    size: A4;
+  }
+}
+
+/* Scrollbar styling for webkit */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-paper);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-faint-ash);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-steel);
 }

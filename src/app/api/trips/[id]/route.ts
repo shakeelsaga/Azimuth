@@ -45,3 +45,12 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
   if (result.count === 0) return createApiError('not_found', 'Trip not found.', 404);
   return Response.json({ updated: true });
 }
+
+export async function DELETE(_: Request, context: { params: Promise<{ id: string }> }): Promise<Response> {
+  const user = await requireUser();
+  if (user instanceof Response) return user;
+  const { id } = await context.params;
+  const result = await prisma.trip.deleteMany({ where: { id, userId: user.id } });
+  if (result.count === 0) return createApiError('not_found', 'Trip not found.', 404);
+  return Response.json({ deleted: true });
+}

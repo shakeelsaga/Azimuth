@@ -2,6 +2,12 @@
 
 ## v1.2.0 — Secure persistence and release readiness
 
+### 2026-10-23 19:05:00 +05:30
+
+- Added live production deployment badge and direct access links:
+  - Added custom Render live demo badge and clickable link to `https://azimuth-jcg8.onrender.com/` in `README.md`.
+  - Added live deployment callout box in `README.md` and `Developer_docs.md` with cold start notice for reviewers.
+
 ### 2026-10-23 18:55:00 +05:30
 
 - Fixed Render deployment compilation failure (`Cannot find module '@tailwindcss/postcss'`):

@@ -4,6 +4,16 @@
   <p><strong>Intelligent, human-crafted travel itineraries with real-time adaptation and safety routing.</strong></p>
 
   <p>
+    <a href="https://azimuth-jcg8.onrender.com/" target="_blank">
+      <img src="https://img.shields.io/badge/Live%20Demo-azimuth--jcg8.onrender.com-00c7b7?style=for-the-badge&logo=render&logoColor=white" alt="Live Demo" />
+    </a>
+  </p>
+
+  <p>
+    <a href="https://azimuth-jcg8.onrender.com/" target="_blank"><strong>Explore Live Application &rarr;</strong></a>
+  </p>
+
+  <p>
     <a href="#overview">Overview</a> •
     <a href="#core-features">Features</a> •
     <a href="#tech-stack">Tech Stack</a> •
@@ -17,6 +27,11 @@
 ---
 
 ## Overview
+
+> [!TIP]
+> **Live Deployment:** Azimuth is live in production on Render. You can test the application directly at:  
+> **👉 [https://azimuth-jcg8.onrender.com](https://azimuth-jcg8.onrender.com)**  
+> *(Note: Render free tier instances spin down after inactivity; initial cold starts take ~30–45 seconds to wake up).*
 
 **AZiMUTH** is a comprehensive travel planning application designed to turn open-ended travel ideas into balanced, day-by-day itineraries. Inspired by the incredible navigation of the **Arctic Tern**—a bird that journeys over 44,000 miles each year from pole to pole—Azimuth combines structured travel pacing, interactive mapping, budget tracking, weather context, and emergency SOS routing into a single, intuitive workspace.
 

@@ -2,6 +2,13 @@
 
 ## v1.2.0 — Secure persistence and release readiness
 
+### 2026-10-23 18:55:00 +05:30
+
+- Fixed Render deployment compilation failure (`Cannot find module '@tailwindcss/postcss'`):
+  - Diagnosed that under `NODE_ENV=production`, `npm install` skips `devDependencies`, leaving PostCSS and build tools uninstalled on fresh container instances.
+  - Promoted `@tailwindcss/postcss`, `tailwindcss`, `prisma`, and `typescript` from `devDependencies` to `dependencies` in `package.json`.
+  - Updated `render.yaml` `buildCommand` to `npm install --include=dev && npx prisma db push && npm run build` ensuring all compilation plugins and type definitions are present during Next.js webpack builds.
+
 ### 2026-10-23 18:35:00 +05:30
 
 - Prepared application for cloud deployment on Render:
